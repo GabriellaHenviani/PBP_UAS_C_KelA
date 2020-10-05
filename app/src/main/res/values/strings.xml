@@ -1,7 +1,22 @@
 <resources>
     <string name="app_name">Tubes_Sewa_Kos</string>
-    <string name="cari">Cari</string>
-    <string name="akun">Akun</string>
-    <string name="sewa">Sewa</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="tambah_kos">Tambah kos</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="setting">Setting</string>
+    <string name="register">Register</string>
+
+    <string name="nama_lengkap">Nama Lengkap</string>
+    <string name="no_hp">Nomor Handphone</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="belum_ada_account">Belum ada account? Register di sini</string>
+    <string name="sudah_ada_account">Sudah ada account? Login di sini</string>
+    <string name="title_activity_logged_in">LoggedInActivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>
