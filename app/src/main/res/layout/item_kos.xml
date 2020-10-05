@@ -14,7 +14,8 @@
     </data>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="?attr/backgroundColor">
 
         <androidx.cardview.widget.CardView
 
@@ -25,13 +26,15 @@
             tools:context="com.smith.ugd3_c_9807.RecyclerViewAdapter"
             android:id="@+id/ParentAdapter"
 
-            android:onClick="@{(view) -> clickListener.onClick(view)}">
+            android:onClick="@{(view) -> clickListener.onClick(view)}"
+            android:background="?attr/cardBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:background="?attr/cardBackground">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -54,7 +57,8 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginBottom="5dp"
                         android:text="@{kos.nama}"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp"
+                        android:textColor="?attr/textColor"/>
                     <TextView
                         android:id="@+id/text_tipe_kos"
                         android:layout_width="wrap_content"
@@ -62,7 +66,8 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginVertical="5dp"
                         android:text="@{kos.tipe}"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp"
+                        android:textColor="?attr/textColor"/>
 
                     <TextView
                         android:id="@+id/text_alamat"
@@ -71,7 +76,8 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginVertical="5dp"
                         android:text="@{kos.alamat}"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp"
+                        android:textColor="?attr/textColor"/>
 
                     <TextView
                         android:id="@+id/text_harga_kos"
@@ -80,8 +86,8 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginVertical="5dp"
                         android:text="@{String.valueOf(kos.harga)}"
-                        android:textSize="12sp"/>
-
+                        android:textSize="12sp"
+                        android:textColor="?attr/textColor"/>
                 </LinearLayout>
 
             </LinearLayout>

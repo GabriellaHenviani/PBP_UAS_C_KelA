@@ -1,12 +1,15 @@
 package com.kelompok_a.tubes_sewa_kos;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +32,8 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
+        binding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_login, container, false);
         View view = binding.getRoot();
 
         binding.linkSignup.setOnClickListener(new TextListener());

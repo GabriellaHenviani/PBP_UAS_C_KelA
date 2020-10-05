@@ -4,28 +4,33 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.textfield.TextInputEditText;
 import com.kelompok_a.tubes_sewa_kos.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     public static ActivityMainBinding binding;
     public static boolean isLogin;
-
+    SharedPref sharedPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPref = new SharedPref(this);
+        if(sharedPref.loadNightModeState()==true){
+            setTheme(R.style.DarkTheme);
+        }
+        else
+        {
+            setTheme(R.style.AppTheme);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -75,11 +80,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         .commit();
                 break;
             case R.id.setting:
-                Fragment settingFragment = new SettingFragment();
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_layout, settingFragment)
-                        .commit();
+                Intent intent = new Intent(MainActivity.this,Setting.class);
+                Toast.makeText(MainActivity.this, "Search", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+//                Fragment settingFragment = new SettingFragment();
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.fragment_layout, settingFragment)
+//                        .commit();
                 break;
 
             case R.id.profile:
