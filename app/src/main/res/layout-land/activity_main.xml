@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <data>
+        <variable
+            name="mainActivity"
+            type="com.kelompok_a.tubes_sewa_kos.MainActivity" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".MainActivity"
+        android:background="?attr/backgroundColor">
+
+        <FrameLayout
+            android:id="@+id/fragment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_navigation"
+            android:background="?attr/backgroundColor"/>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:menu="@menu/bottom_nav"
+            app:itemIconTint="@android:color/white"
+            app:itemTextColor="@android:color/white"
+            app:labelVisibilityMode="labeled"
+            android:background="?attr/buttonColor"/>
+    </RelativeLayout>
+
+</layout>

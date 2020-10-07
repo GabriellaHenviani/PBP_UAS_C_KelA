@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="loginFragment"
-            type="com.kelompok_a.tubes_sewa_kos.LoginFragment" />
+            name="registerFragment"
+            type="com.kelompok_a.tubes_sewa_kos.RegisterFragment" />
     </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".LoginFragment"
+        tools:context=".RegisterFragment"
         android:background="?attr/backgroundColor">
 
         <LinearLayout
@@ -24,9 +27,55 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
+                android:text="@string/nama_lengkap"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="?attr/textColor"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_nama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/nama_lengkap"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:text="@string/no_hp"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="?attr/textColor"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_no_hp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/no_hp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
                 android:text="@string/email"
-                android:textColor="?attr/textColor"
-                style="@style/TextAppearance.MaterialComponents.Headline6"/>
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="?attr/textColor"/>
 
             <!-- Email Label -->
             <com.google.android.material.textfield.TextInputLayout
@@ -35,6 +84,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_email"
                     android:layout_width="match_parent"
@@ -48,8 +98,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
                 android:text="@string/password"
-                android:textColor="?attr/textColor"
-                style="@style/TextAppearance.MaterialComponents.Headline6" />
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="?attr/textColor"/>
 
             <!-- Password Label -->
             <com.google.android.material.textfield.TextInputLayout
@@ -58,6 +108,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_password"
                     android:layout_width="match_parent"
@@ -67,23 +118,24 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/btn_login"
+                android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
-                android:text="@string/login"
+                android:text="@string/register"
                 android:backgroundTint="@color/button_ok"/>
 
-            <TextView android:id="@+id/link_signup"
+            <TextView android:id="@+id/link_login"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="@string/belum_ada_account"
+                android:text="@string/sudah_ada_account"
                 android:gravity="center"
                 android:textColor="@color/link"/>
 
         </LinearLayout>
 
     </FrameLayout>
+    </ScrollView>
 </layout>
