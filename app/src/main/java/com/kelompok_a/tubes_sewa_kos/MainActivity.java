@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case R.id.setting:
                 Intent intent = new Intent(MainActivity.this,Setting.class);
-                Toast.makeText(MainActivity.this, "Search", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
 //                Fragment settingFragment = new SettingFragment();
 //                getSupportFragmentManager()
