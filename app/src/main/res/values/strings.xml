@@ -15,8 +15,8 @@
     <string name="belum_ada_account">Belum ada account? Register di sini</string>
     <string name="sudah_ada_account">Sudah ada account? Login di sini</string>
     <string name="title_activity_logged_in">LoggedInActivity</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    //akses token mapbox
+    <string name="mapbox_access_token">pk.eyJ1IjoiYmFndXNzZXB0aWFudG8iLCJhIjoiY2tmbWZrb2pwMDJkeDJxb2ZjMmYxMmF3NiJ9.D9uQnL1JzwraoN5yly6CIg</string>
 
 </resources>

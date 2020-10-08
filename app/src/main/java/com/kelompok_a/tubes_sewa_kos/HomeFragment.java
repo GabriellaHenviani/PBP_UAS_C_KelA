@@ -52,9 +52,9 @@ public class HomeFragment extends Fragment {
     }
 
     public void buatListKos() {
-        Kos kos1 = new Kos("Kos ABC", "Putri", "Jl Abc no.90", 800000);
-        Kos kos2 = new Kos("Kos Damai", "Campuran", "Jl Damai no.12", 500000);
-        Kos kos3 = new Kos("Kos Surya", "Putra", "Jl Surya no.55", 600000);
+        Kos kos1 = new Kos("Kos ABC", "Putri", "Jl Abc no.90", 800000, "", 110.367432, -7.783030);
+        Kos kos2 = new Kos("Kos Damai", "Campuran", "Jl Damai no.12", 500000, "", 110.367695,-7.780134);
+        Kos kos3 = new Kos("Kos Surya", "Putra", "Jl Surya no.55", 600000, "", 110.363089, -7.783149);
         listKos.add(kos1);
         listKos.add(kos2);
         listKos.add(kos3);

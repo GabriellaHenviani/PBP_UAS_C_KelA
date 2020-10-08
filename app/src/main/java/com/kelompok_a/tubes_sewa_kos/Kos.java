@@ -6,18 +6,24 @@ import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
 
-public class Kos {
+import java.io.Serializable;
+
+public class Kos implements Serializable {
     private String nama;
     private String tipe;
     private String alamat;
     private int harga;
     private String imgURL;
+    private double longitude, latitude;
 
-    public Kos(String nama, String tipe, String alamat, int harga) {
+    public Kos(String nama, String tipe, String alamat, int harga, String imgURL, double longitude, double latitude) {
         this.nama = nama;
         this.tipe = tipe;
         this.alamat = alamat;
         this.harga = harga;
+        this.imgURL = imgURL;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public String getNama() {
@@ -56,6 +62,22 @@ public class Kos {
 
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     @BindingAdapter("android:loadImage")

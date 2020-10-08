@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         .commit();
                 break;
             case R.id.setting:
-                Intent intent = new Intent(MainActivity.this,Setting.class);
+                Intent intent = new Intent(MainActivity.this, Setting.class);
                 startActivity(intent);
 //                Fragment settingFragment = new SettingFragment();
 //                getSupportFragmentManager()

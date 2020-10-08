@@ -1,12 +1,14 @@
 package com.kelompok_a.tubes_sewa_kos;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kelompok_a.tubes_sewa_kos.databinding.ItemKosBinding;
@@ -61,7 +63,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         public void onClick(View view) {
-            Toast.makeText(view.getContext(), "You touch me?", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(view.getContext(), "You touch me?", Toast.LENGTH_SHORT).show();
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            Kos kos = result.get(getAdapterPosition());
+            Bundle data = new Bundle();
+            data.putSerializable("kos", kos);
+            InfoKosFragment infoKosFragment = new InfoKosFragment();
+            infoKosFragment.setArguments(data);
+            activity.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, infoKosFragment)
+                    .commit();
         }
     }
 }
