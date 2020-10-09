@@ -5,24 +5,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MapActivity">
-    
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
+
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="121dp"
         app:mapbox_cameraZoom="8"/>
 
-    <Button
-        android:id="@+id/back_btn"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="42dp"
         android:layout_gravity="bottom"
-        android:backgroundTint="@color/button_ok"
-        android:text="Back"/>
+        android:layout_margin="42dp">
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/button_ok"
+            android:text="Back"/>
     </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
