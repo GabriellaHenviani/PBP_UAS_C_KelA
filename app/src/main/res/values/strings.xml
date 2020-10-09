@@ -19,4 +19,15 @@
     //akses token mapbox
     <string name="mapbox_access_token">pk.eyJ1IjoiYmFndXNzZXB0aWFudG8iLCJhIjoiY2tmbWZrb2pwMDJkeDJxb2ZjMmYxMmF3NiJ9.D9uQnL1JzwraoN5yly6CIg</string>
 
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Kost Aja</string>
+    <string name="slide_1_desc">Cara termudah menemukan kost idaman kamu !</string>
+
+    <string name="slide_2_title">Yuk Kost Aja</string>
+    <string name="slide_2_desc">Yuk cari kost idaman kamu!</string>
+
 </resources>
