@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.NotificationCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,10 +27,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.kelompok_a.tubes_sewa_kos.databinding.ActivityMainBinding;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     public static ActivityMainBinding binding;
     public static boolean isLogin;
+    private ArrayList<Kos> ListKos;
+    private RecyclerViewAdapter adapter;
+    private RecyclerView recycleView;
+    private  RecyclerView.LayoutManager kLayoutManager;
     SharedPref sharedPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
