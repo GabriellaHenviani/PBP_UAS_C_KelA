@@ -22,7 +22,4 @@ import com.kelompok_a.tubes_sewa_kos.databinding.ActivityMainBinding;
 import javax.xml.transform.Result;
 
 public class TambahKosFragment extends Fragment {
-
-
-
 }

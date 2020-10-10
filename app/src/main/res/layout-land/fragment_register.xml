@@ -43,7 +43,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:hint="@string/nama_lengkap"/>
+                    android:hint="@string/nama_lengkap"
+                    android:textColor="?attr/textColor"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -66,7 +67,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:hint="@string/no_hp"/>
+                    android:hint="@string/no_hp"
+                    android:textColor="?attr/textColor"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -90,7 +92,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:hint="@string/email"/>
+                    android:hint="@string/email"
+                    android:textColor="?attr/textColor"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -114,7 +117,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:hint="@string/password"/>
+                    android:hint="@string/password"
+                    android:textColor="?attr/textColor"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

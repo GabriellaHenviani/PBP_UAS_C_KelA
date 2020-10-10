@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         style="@style/TextAppearance.MaterialComponents.Headline4"
         android:gravity="center"
-        android:text="Tambah Kost"
+        android:text="@string/tambah_kost"
         android:textColor="?attr/textColor"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -32,7 +32,7 @@
             android:autofillHints=""
             android:hint="Nama Kost"
             android:inputType="text"
-            android:textColor="?attr/textColor"/>
+            android:textColor="?attr/textColor" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -48,7 +48,7 @@
             android:autofillHints=""
             android:hint="Harga Kost"
             android:inputType="number"
-            android:textColor="?attr/textColor"/>
+            android:textColor="?attr/textColor" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -80,7 +80,7 @@
             android:autofillHints=""
             android:hint="Tipe Kost"
             android:inputType="text"
-            android:textColor="?attr/textColor"/>
+            android:textColor="?attr/textColor" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -117,7 +117,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-
     </LinearLayout>
-
 </LinearLayout>
