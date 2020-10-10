@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "345096013119",
+    "firebase_url": "https://tubes-sewa-kos.firebaseio.com",
+    "project_id": "tubes-sewa-kos",
+    "storage_bucket": "tubes-sewa-kos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345096013119:android:d62a57286626180e3bbf8a",
+        "android_client_info": {
+          "package_name": "com.kelompok_a.tubes_sewa_kos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345096013119-8p0ah7pd72kr20bl6s3l0t3pge92o3oh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_bKv8iGz-YbR0JqLK-9PwdYK86YWUxHo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345096013119-8p0ah7pd72kr20bl6s3l0t3pge92o3oh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

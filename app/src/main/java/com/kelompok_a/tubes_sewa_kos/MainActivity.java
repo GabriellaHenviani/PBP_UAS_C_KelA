@@ -1,8 +1,13 @@
 package com.kelompok_a.tubes_sewa_kos;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -10,10 +15,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.NotificationCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.kelompok_a.tubes_sewa_kos.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -45,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         isLogin = false;
         loadPreference();
+
+        createFirebaseNotification();
 
         changeMenu(binding.bottomNavigation);
     }
@@ -120,5 +131,29 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             navigationView.getMenu().findItem(R.id.profile).setVisible(false);
             navigationView.getMenu().findItem(R.id.tambahKos).setVisible(false);
         }
+    }
+
+    private void createFirebaseNotification() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String CHANNEL_ID = "Channel 1";
+            CharSequence name = "Channel 1";
+            String description = "This is Channel 1";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("berita")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String mag = "Successful";
+                        if(!task.isSuccessful()) {
+                            mag = "Failed";
+                        }
+                    }
+                });
     }
 }
