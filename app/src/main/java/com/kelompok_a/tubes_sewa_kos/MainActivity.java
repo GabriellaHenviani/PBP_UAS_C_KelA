@@ -52,25 +52,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .replace(R.id.fragment_layout, homeFragment)
                 .commit();
 
-        isLogin = false;
-        loadPreference();
+        isLogin = sharedPref.loadIsLogin();
 
         createFirebaseNotification();
 
         changeMenu(binding.bottomNavigation);
-    }
-
-    private void loadPreference() {
-        String name = "profile";
-        SharedPreferences preferences;
-        int mode = Activity.MODE_PRIVATE;
-
-        preferences = getSharedPreferences(name, mode);
-        if (preferences!=null) {
-            if(preferences.getString("isLogin", "").equals("true")){
-                isLogin = true;
-            }
-        }
     }
 
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -121,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public static void changeMenu(BottomNavigationView navigationView) {
 
-        if(isLogin == true) {
+        if(isLogin) {
             navigationView.getMenu().findItem(R.id.login).setVisible(false);
             navigationView.getMenu().findItem(R.id.profile).setVisible(true);
             navigationView.getMenu().findItem(R.id.tambahKos).setVisible(true);

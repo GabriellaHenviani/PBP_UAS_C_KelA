@@ -17,9 +17,28 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.kelompok_a.tubes_sewa_kos.databinding.ActivityMainBinding;
+import com.kelompok_a.tubes_sewa_kos.databinding.FragmentLoginBinding;
+import com.kelompok_a.tubes_sewa_kos.databinding.FragmentTambahKosBinding;
 
 
 import javax.xml.transform.Result;
 
 public class TambahKosFragment extends Fragment {
+
+    private FragmentTambahKosBinding binding;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_tambah_kos, container, false);
+        View view = binding.getRoot();
+        return view;
+    }
 }

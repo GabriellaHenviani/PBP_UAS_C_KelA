@@ -1,123 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="?attr/backgroundColor"
-    android:layout_margin="16dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/TextAppearance.MaterialComponents.Headline4"
-        android:gravity="center"
-        android:text="Tambah Kost"
-        android:textColor="?attr/textColor"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_nama"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_nama_kos"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:autofillHints=""
-            android:hint="Nama Kost"
-            android:inputType="text"
-            android:textColor="?attr/textColor"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_harga"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_harga_kos"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:autofillHints=""
-            android:hint="Harga Kost"
-            android:inputType="number"
-            android:textColor="?attr/textColor"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_alamat"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_alamat_kos"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:autofillHints=""
-            android:hint="Alamat Kost"
-            android:inputType="text"
-            android:textColor="?attr/textColor"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_tipe"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_tipe_kos"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:autofillHints=""
-            android:hint="Tipe Kost"
-            android:inputType="text"
-            android:textColor="?attr/textColor"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
+<layout>
+    <data>
+        <variable
+            name="tambahKosFragment"
+            type="com.kelompok_a.tubes_sewa_kos.TambahKosFragment" />
+    </data>
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:background="?attr/backgroundColor"
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/backgroundColor">
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-        <Button
-            android:id="@+id/btn_cancel"
-            android:text="Cancel"
-            android:layout_weight="0.8"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="#FF0000"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Headline4"
+            android:gravity="center"
+            android:text="Tambah Kost"
+            android:textColor="?attr/textColor"/>
 
-        <Button
-            android:id="@+id/btn_add"
-            android:text="Add"
-            android:layout_weight="0.8"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="#2196F3"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_nama"
+            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_nama_kos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autofillHints=""
+                android:hint="Nama Kost"
+                android:inputType="text"
+                android:textColor="?attr/textColor"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/btn_Camera"
-            android:text="Camera"
-            android:layout_weight="0.8"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="#00BCD4"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_harga"
+            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_harga_kos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autofillHints=""
+                android:hint="Harga Kost"
+                android:inputType="number"
+                android:textColor="?attr/textColor"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_alamat"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_alamat_kos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autofillHints=""
+                android:hint="Alamat Kost"
+                android:inputType="text"
+                android:textColor="?attr/textColor"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_tipe"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_tipe_kos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autofillHints=""
+                android:hint="Tipe Kost"
+                android:inputType="text"
+                android:textColor="?attr/textColor"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/backgroundColor">
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:text="Cancel"
+                android:layout_weight="0.8"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#FF0000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btn_add"
+                android:text="Add"
+                android:layout_weight="0.8"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#2196F3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btn_Camera"
+                android:text="Camera"
+                android:layout_weight="0.8"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="#00BCD4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</layout>

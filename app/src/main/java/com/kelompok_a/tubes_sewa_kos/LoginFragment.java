@@ -22,6 +22,7 @@ import java.math.BigInteger;
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
+    private SharedPref sharedPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        sharedPref = new SharedPref(getActivity());
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_login, container, false);
         View view = binding.getRoot();
@@ -56,8 +58,8 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View view) {
             if(validateLogin()) {
+                sharedPref.setIsLogin(true);
                 MainActivity.isLogin = true;
-                savePreferences(MainActivity.isLogin);
                 MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
                 Fragment homeFragment = new HomeFragment();
                 getActivity().getSupportFragmentManager()
@@ -93,21 +95,5 @@ public class LoginFragment extends Fragment {
             Toast.makeText(getActivity(), "Login berhasil", Toast.LENGTH_SHORT).show();
             return true;
         }
-    }
-
-    public void savePreferences(boolean isLogin) {
-        String name = "profile";
-        SharedPreferences preferences;
-        int mode = Activity.MODE_PRIVATE;
-
-        preferences = getActivity().getSharedPreferences(name, mode);
-        SharedPreferences.Editor editor = preferences.edit();
-        if(isLogin) {
-            editor.putString("isLogin", "true");
-        }
-        else {
-            editor.putString("isLogin", "false");
-        }
-        editor.apply();
     }
 }
