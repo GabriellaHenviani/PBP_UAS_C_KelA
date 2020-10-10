@@ -12,17 +12,13 @@
         android:layout_height="match_parent"
         app:mapbox_cameraZoom="12"/>
 
-    <ScrollView
+    <Button
+        android:id="@+id/back_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_margin="42dp">
-        <Button
-            android:id="@+id/back_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:backgroundTint="@color/button_ok"
-            android:text="Back"/>
-    </ScrollView>
+        android:backgroundTint="@color/button_ok"
+        android:text="Back"
+        android:layout_margin="42dp"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

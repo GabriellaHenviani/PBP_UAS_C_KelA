@@ -1,9 +1,7 @@
 package com.kelompok_a.tubes_sewa_kos;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,16 +30,11 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete;
-import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -57,16 +50,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final String DESTINATION_SYMBOL_LAYER_ID = "destination-symbol-layer-id";
     private static final String DESTINATION_ICON_ID = "destination-icon-id";
     private static final String DESTINATION_SOURCE_ID = "destination-source-id";
-    private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
-    private PermissionsManager permissionsManager;
     private MapboxMap mapboxMap;
     private MapView mapView;
     private Point origin, destination;
     private NavigationMapRoute navigationMapRoute;
     private static final String TAG = "MapActivity";
-    private Button back_btn;
     private DirectionsRoute currentRoute;
-    double longi, latit;
+    double longi = 0, latit = 0;
+    PermissionsManager permissionsManager;
+    Button back_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,12 +76,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         longi = bundle.getDouble("lng");
         latit = bundle.getDouble("lat");
 
-        back_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        back_btn.setOnClickListener(view -> finish());
     }
 
     private void initLayers(@NonNull Style loadedMapStyle) {
@@ -150,7 +137,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
-        mapboxMap.setStyle(new Style.Builder().fromUri(Style.MAPBOX_STREETS),
+        Style.Builder style;
+        SharedPref sharedPref = new SharedPref(this);
+        if(sharedPref.loadNightModeState() == true)
+            style = new Style.Builder().fromUri(Style.DARK);
+        else
+            style = new Style.Builder().fromUri(Style.MAPBOX_STREETS);
+        mapboxMap.setStyle(style,
                 new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
