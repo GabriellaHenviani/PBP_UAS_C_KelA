@@ -14,6 +14,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentHomeBinding;
 
@@ -23,6 +24,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private ArrayList<Kos> listKos;
+    private RecyclerViewAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,15 +46,17 @@ public class HomeFragment extends Fragment {
         listKos = new ArrayList<>();
         buatListKos();
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), listKos);
+        adapter = new RecyclerViewAdapter(getActivity(), listKos);
         binding.recyclerView.setAdapter(adapter);
         binding.swipeRefresh.setOnRefreshListener(new RefreshListener());
+        SearchView searchView = view.findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchListener());
 
         return view;
     }
 
     public void buatListKos() {
-        Kos kos1 = new Kos("Kos ABC", "Putri", "Jl Abc no.90", 800000, "", 110.367432, -7.783030);
+        Kos kos1 = new Kos("Kos ABC", "Putri", "Jl Abc no.90", 800000, "https://cdn.styleblueprint.com/wp-content/uploads/2015/12/SB-ATL-ZookHome-9-e1538165814448.jpg", 110.367432, -7.783030);
         Kos kos2 = new Kos("Kos Damai", "Campuran", "Jl Damai no.12", 500000, "", 110.367695,-7.780134);
         Kos kos3 = new Kos("Kos Surya", "Putra", "Jl Surya no.55", 600000, "", 110.363089, -7.783149);
         listKos.add(kos1);
@@ -66,6 +70,28 @@ public class HomeFragment extends Fragment {
             // TODO: tambah fungsi load data
 
             binding.swipeRefresh.setRefreshing(false);
+        }
+    }
+
+    public class SearchListener implements SearchView.OnQueryTextListener {
+        @Override
+        public boolean onQueryTextSubmit(String s) {
+            try {
+                adapter.getFilter().filter(s);
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String s) {
+            try {
+                adapter.getFilter().filter(s);
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+            return false;
         }
     }
 }

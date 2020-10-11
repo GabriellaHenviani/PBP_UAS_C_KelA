@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,17 +15,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kelompok_a.tubes_sewa_kos.databinding.ItemKosBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements Filterable {
     private Context context;
-    private List<Kos> result;
+    private List<Kos> result, resultAll;
 
     public RecyclerViewAdapter(){}
 
     public RecyclerViewAdapter(Context context, List<Kos> result){
         this.context = context;
         this.result = result;
+        resultAll = new ArrayList<>(result);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -37,7 +42,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-
         Kos kos = result.get(position);
         holder.bind(kos);
     }
@@ -45,6 +49,44 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
         return result.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                List<Kos> filteredList = new ArrayList<>();
+
+                if (charSequence == null || charSequence.length() == 0) {
+                    filteredList.addAll(resultAll);
+                } else {
+                    String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                    for (Kos item : resultAll) {
+                        if (item.getNama().toLowerCase().contains(filterPattern))
+                            filteredList.add(item);
+                        else if (item.getTipe().toLowerCase().contains(filterPattern))
+                            filteredList.add(item);
+                        else if (item.getAlamat().toLowerCase().contains(filterPattern))
+                            filteredList.add(item);
+                        else if (String.valueOf(item.getHarga()).contains(filterPattern))
+                            filteredList.add(item);
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults results) {
+                result.clear();
+                result.addAll((List) results.values);
+                notifyDataSetChanged();
+            }
+        };
+        return filter;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

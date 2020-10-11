@@ -80,7 +80,7 @@ public class Kos implements Serializable {
         this.latitude = latitude;
     }
 
-    @BindingAdapter("android:loadImage")
+    @BindingAdapter({"imgURL"})
     public static void loadImage(ImageView imageView, String imageUrl) {
         Glide.with(imageView)
                 .load(imageUrl)
