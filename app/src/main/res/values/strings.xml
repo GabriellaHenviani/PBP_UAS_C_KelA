@@ -2,7 +2,6 @@
     <string name="app_name">Tubes_Sewa_Kos</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
-    <string name="tambah_kos">Tambah kos</string>
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="setting">Setting</string>
@@ -19,16 +18,27 @@
     //akses token mapbox
     <string name="mapbox_access_token">pk.eyJ1IjoiYmFndXNzZXB0aWFudG8iLCJhIjoiY2tmbWZrb2pwMDJkeDJxb2ZjMmYxMmF3NiJ9.D9uQnL1JzwraoN5yly6CIg</string>
 
-    <string name="next">Next</string>
+    <string name="next">Lanjut</string>
     <string name="skip">Skip</string>
 
-    <string name="start">GOT IT</string>
+    <string name="start">Mulai</string>
 
     <string name="slide_1_title">Kost Aja</string>
-    <string name="slide_1_desc">Cara termudah menemukan kost idaman kamu !</string>
+    <string name="slide_1_desc">Selamat datang di KostAja! Di sini kamu dapat mencari informasi tentang kost yang tersedia di seluruh Indonesia</string>
 
     <string name="slide_2_title">Yuk Kost Aja</string>
     <string name="slide_2_desc">Yuk cari kost idaman kamu!</string>
-    <string name="tambah_kost">Tambah Kost</string>
 
+    <string name="tambah_kost">Tambah Kost</string>
+    <string name="nama_kost">Nama Kost</string>
+    <string name="alamat_kost">Alamat Kost</string>
+    <string name="tipe_kost">Tipe Kost</string>
+    <string name="batal">Batal</string>
+    <string name="tambah">Tambah</string>
+    <string name="tambah_foto">+ Foto</string>
+    <string name="harga_kost">Harga Kost</string>
+    <string name="imageContentDesc">Image</string>
+    <string name="kembali">Kembali</string>
+    <string name="night_mode">Night mode</string>
+    <string name="lihat_di_peta">Peta</string>
 </resources>

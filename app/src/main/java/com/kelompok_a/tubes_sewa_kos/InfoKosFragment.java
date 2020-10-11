@@ -1,14 +1,12 @@
 package com.kelompok_a.tubes_sewa_kos;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.kelompok_a.tubes_sewa_kos.databinding.ActivityMainBinding;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentInfoKosBinding;
-
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
 
 public class InfoKosFragment extends Fragment {
 
@@ -37,8 +30,6 @@ public class InfoKosFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_info_kos);
     }
 
     @Override
@@ -63,16 +54,16 @@ public class InfoKosFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        text_nama_kos.setText(kos.getNama());
-        text_tipe_kos.setText(kos.getTipe());
-        text_alamat_kos.setText(kos.getAlamat());
-        text_harga_kos.setText(String.valueOf(kos.getHarga()));
+        binding.textNamaKos.setText(kos.getNama());
+        binding.textTipeKos.setText(kos.getTipe());
+        binding.textAlamatKos.setText(kos.getAlamat());
+        binding.textHargaKos.setText(String.valueOf(kos.getHarga()));
         Glide.with(this)
                 .load(kos.getImgURL())
                 .placeholder(R.drawable.logokost)
                 .centerCrop()
-                .into(imageView);
-        back_btn.setOnClickListener(new View.OnClickListener() {
+                .into(binding.profileImg);
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                back ke main activity (lebih lambat tapi muncul bottom nav)
@@ -85,7 +76,7 @@ public class InfoKosFragment extends Fragment {
             }
         });
 
-        map_btn.setOnClickListener(new View.OnClickListener() {
+        binding.mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MapActivity.class);

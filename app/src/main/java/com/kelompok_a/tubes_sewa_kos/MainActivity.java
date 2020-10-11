@@ -1,29 +1,16 @@
 package com.kelompok_a.tubes_sewa_kos;
 
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.app.NotificationCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,17 +25,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public static ActivityMainBinding binding;
     public static boolean isLogin;
-    private ArrayList<Kos> ListKos;
-    private RecyclerViewAdapter adapter;
-    private RecyclerView recycleView;
-    private  RecyclerView.LayoutManager kLayoutManager;
-
 
     SharedPref sharedPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPref = new SharedPref(this);
-        if(sharedPref.loadNightModeState()==true){
+        if(sharedPref.loadNightModeState()){
             setTheme(R.style.DarkTheme);
         }
         else
@@ -61,17 +43,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.bottomNavigation.setOnNavigationItemSelectedListener(this);
 
+        isLogin = sharedPref.loadIsLogin();
+        changeMenu(binding.bottomNavigation);
+
         Fragment homeFragment = new HomeFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_layout, homeFragment)
                 .commit();
-
-        isLogin = sharedPref.loadIsLogin();
-
         createFirebaseNotification();
-
-        changeMenu(binding.bottomNavigation);
     }
 
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -94,11 +74,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.setting:
                 Intent intent = new Intent(MainActivity.this, Setting.class);
                 startActivity(intent);
-//                Fragment settingFragment = new SettingFragment();
-//                getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.fragment_layout, settingFragment)
-//                        .commit();
                 break;
 
             case R.id.profile:

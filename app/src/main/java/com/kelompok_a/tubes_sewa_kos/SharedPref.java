@@ -1,6 +1,5 @@
 package com.kelompok_a.tubes_sewa_kos;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -19,8 +18,7 @@ public class SharedPref {
     }
 
     public boolean loadNightModeState(){
-        Boolean state = sharedPreferences.getBoolean("NightMode",false);
-        return state;
+        return sharedPreferences.getBoolean("NightMode",false);
     }
 
     public void setIsLogin(boolean isLogin) {
@@ -30,8 +28,7 @@ public class SharedPref {
     }
 
     public boolean loadIsLogin() {
-         Boolean isLogin = sharedPreferences.getBoolean("isLogin", false);
-         return isLogin;
+         return sharedPreferences.getBoolean("isLogin", false);
     }
 
     public void setFirstTimeLaunch(boolean isFirstTime) {
@@ -41,7 +38,6 @@ public class SharedPref {
     }
 
     public boolean isFirstTimeLaunch() {
-        Boolean isFirstTime = sharedPreferences.getBoolean("IsFirstTimeLaunch", true);
-        return isFirstTime;
+        return sharedPreferences.getBoolean("IsFirstTimeLaunch", true);
     }
 }

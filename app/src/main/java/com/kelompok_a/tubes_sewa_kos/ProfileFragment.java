@@ -16,6 +16,7 @@ import com.kelompok_a.tubes_sewa_kos.databinding.FragmentProfileBinding;
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
+    private SharedPref sharedPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        sharedPref = new SharedPref(getActivity());
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
         View view = binding.getRoot();
 
@@ -36,8 +38,9 @@ public class ProfileFragment extends Fragment {
     public class ButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            sharedPref.setIsLogin(false);
             MainActivity.isLogin = false;
-            savePreferences(MainActivity.isLogin);
+
             MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
             Fragment homeFragment = new HomeFragment();
             getActivity().getSupportFragmentManager()
@@ -45,21 +48,5 @@ public class ProfileFragment extends Fragment {
                     .replace(R.id.fragment_layout, homeFragment)
                     .commit();
         }
-    }
-
-    public void savePreferences(boolean isLogin) {
-        String name = "profile";
-        SharedPreferences preferences;
-        int mode = Activity.MODE_PRIVATE;
-
-        preferences = getActivity().getSharedPreferences(name, mode);
-        SharedPreferences.Editor editor = preferences.edit();
-        if(isLogin) {
-            editor.putString("isLogin", "true");
-        }
-        else {
-            editor.putString("isLogin", "false");
-        }
-        editor.apply();
     }
 }

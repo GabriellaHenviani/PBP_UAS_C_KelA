@@ -1,23 +1,16 @@
 package com.kelompok_a.tubes_sewa_kos;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentLoginBinding;
-
-import java.math.BigInteger;
 
 public class LoginFragment extends Fragment {
 
@@ -27,7 +20,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -60,6 +52,7 @@ public class LoginFragment extends Fragment {
             if(validateLogin()) {
                 sharedPref.setIsLogin(true);
                 MainActivity.isLogin = true;
+
                 MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
                 Fragment homeFragment = new HomeFragment();
                 getActivity().getSupportFragmentManager()

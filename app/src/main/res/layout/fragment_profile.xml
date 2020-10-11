@@ -7,27 +7,30 @@
             name="profileFragment"
             type="com.kelompok_a.tubes_sewa_kos.ProfileFragment" />
     </data>
-    <FrameLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ProfileFragment">
-
-        <LinearLayout
-            android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="42dp">
+            android:layout_height="wrap_content"
+            tools:context=".ProfileFragment">
 
-            <Button
-                android:id="@+id/btn_logout"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
-                android:text="@string/logout"
-                android:backgroundTint="@color/button_ok"/>
+                android:layout_height="match_parent"
+                android:layout_margin="42dp">
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/btn_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="@string/logout"
+                    android:backgroundTint="@color/button_ok"/>
 
-    </FrameLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </ScrollView>
 </layout>

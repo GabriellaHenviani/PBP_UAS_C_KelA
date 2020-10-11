@@ -10,20 +10,22 @@
         <item name="cardBackground">#ffffff</item>
         <item name="textColor">#808080</item>
         <item name="tintColor">#000000</item>
-        <item name="buttonColor">@color/colorPrimary</item>
+        <item name="buttonColor">@color/button_ok</item>
+        <item name="buttonCancelColor">@color/button_cancel</item>
     </style>
 
     <!-- Theme Dark -->
     <style name="DarkTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#212121</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">#000000</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="backgroundColor">#303030</item>
         <item name="cardBackground">#424242</item>
         <item name="textColor">#ffffff</item>
         <item name="tintColor">#ffffff</item>
-        <item name="buttonColor">@color/colorPrimary</item>
+        <item name="buttonColor">@color/button_ok_dark</item>
+        <item name="buttonCancelColor">@color/button_cancel_dark</item>
     </style>
     <style name="SplashScreenStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/logo</item>

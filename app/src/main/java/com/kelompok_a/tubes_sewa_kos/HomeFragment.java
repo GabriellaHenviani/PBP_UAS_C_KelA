@@ -1,16 +1,13 @@
 package com.kelompok_a.tubes_sewa_kos;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +46,7 @@ public class HomeFragment extends Fragment {
         adapter = new RecyclerViewAdapter(getActivity(), listKos);
         binding.recyclerView.setAdapter(adapter);
         binding.swipeRefresh.setOnRefreshListener(new RefreshListener());
-        SearchView searchView = view.findViewById(R.id.search_view);
-        searchView.setOnQueryTextListener(new SearchListener());
+        binding.searchView.setOnQueryTextListener(new SearchListener());
 
         return view;
     }
@@ -67,8 +63,6 @@ public class HomeFragment extends Fragment {
     public class RefreshListener implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         public void onRefresh() {
-            // TODO: tambah fungsi load data
-
             binding.swipeRefresh.setRefreshing(false);
         }
     }

@@ -42,8 +42,9 @@ public class Kos implements Serializable {
         this.tipe = tipe;
     }
 
-    public int getHarga() {
-        return harga;
+    public String getHarga() {
+        String hargaString = "Rp " + harga + " / bulan";
+        return hargaString;
     }
 
     public void setHarga(int harga) { this.harga = harga; }

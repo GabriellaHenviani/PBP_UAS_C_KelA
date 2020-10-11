@@ -1,14 +1,12 @@
 package com.kelompok_a.tubes_sewa_kos;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -28,7 +26,7 @@ public class Setting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         switchMaterial = (SwitchMaterial)findViewById(R.id.mySwitch);
-        if (sharedPref.loadNightModeState()==true){
+        if (sharedPref.loadNightModeState()){
             switchMaterial.setChecked(true);
         }
         switchMaterial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

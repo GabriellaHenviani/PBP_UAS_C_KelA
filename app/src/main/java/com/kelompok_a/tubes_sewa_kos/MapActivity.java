@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -139,10 +138,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.mapboxMap = mapboxMap;
         Style.Builder style;
         SharedPref sharedPref = new SharedPref(this);
-        if(sharedPref.loadNightModeState() == true)
+        if(sharedPref.loadNightModeState())
             style = new Style.Builder().fromUri(Style.DARK);
         else
             style = new Style.Builder().fromUri(Style.MAPBOX_STREETS);
+
         mapboxMap.setStyle(style,
                 new Style.OnStyleLoaded() {
                     @Override
