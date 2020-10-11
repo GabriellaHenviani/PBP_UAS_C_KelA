@@ -7,9 +7,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private RecyclerViewAdapter adapter;
     private RecyclerView recycleView;
     private  RecyclerView.LayoutManager kLayoutManager;
+
+
     SharedPref sharedPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

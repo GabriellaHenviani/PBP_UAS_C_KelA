@@ -8,13 +8,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class Setting extends AppCompatActivity {
     private SwitchMaterial switchMaterial;
     private Button button;
+
     SharedPref sharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPref = new SharedPref(this);

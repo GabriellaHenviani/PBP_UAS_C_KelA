@@ -28,6 +28,8 @@
                 android:layout_height="wrap_content"
                 android:text="Night Mode"
                 android:textColor="?attr/textColor" />
+
+
             <Button
                 android:id="@+id/back"
                 android:layout_marginTop="50dp"
