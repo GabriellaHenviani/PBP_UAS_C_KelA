@@ -1,18 +1,34 @@
 package com.kelompok_a.tubes_sewa_kos;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.hardware.Camera;
+import android.os.Bundle;
+
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -20,15 +36,23 @@ import com.kelompok_a.tubes_sewa_kos.databinding.ActivityMainBinding;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentLoginBinding;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentTambahKosBinding;
 
-
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.xml.transform.Result;
 
 public class TambahKosFragment extends Fragment {
 
+    public static final int CAMERA_PERM_CODE = 101;
+    public static final int CAMERA_REQUEST_CODE = 102;
     private FragmentTambahKosBinding binding;
     public ArrayList<Kos> KOS;
+    private Camera kCamera = null;
+    private CameraView kCameraView = null;
+
 
     public TambahKosFragment() {
         KOS = new ArrayList<>();
@@ -67,8 +91,27 @@ public class TambahKosFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            kCamera = Camera.open();
+        }catch (Exception e){
+            Log.d("Error", "Failed to get Camera" +e.getMessage());
+        }
+        if(kCamera !=null){
+            kCameraView = new CameraView( getActivity(), kCamera);
+            FrameLayout camera_view = (FrameLayout) kCameraView.findViewById(R.id.FLCamera);
+           camera_view.addView(kCameraView);
+        }
+
+        ImageButton imageClose = (ImageButton) kCameraView.findViewById(R.id.imgClose);
+        imageClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.exit(0);
+            }
+        });
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,4 +121,6 @@ public class TambahKosFragment extends Fragment {
         View view = binding.getRoot();
         return view;
     }
+
+
 }
