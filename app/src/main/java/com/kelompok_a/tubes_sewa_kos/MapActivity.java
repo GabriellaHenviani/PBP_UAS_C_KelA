@@ -160,43 +160,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         symbolLayerIconFeature = Feature.fromGeometry(destination);
                         GeoJsonSource source = mapboxMap.getStyle().getSourceAs(DESTINATION_SOURCE_ID);
                         source.setGeoJson(FeatureCollection.fromFeature(symbolLayerIconFeature));
-                        //Nyambungin garis dari origin ke destination
-                        getRoute(origin, destination);
-                    }
-                });
-    }
-
-    //routenya (garis)
-    private void getRoute(Point origin, Point destination) {
-        NavigationRoute.builder(this)
-                .accessToken(Mapbox.getAccessToken() != null ? Mapbox.getAccessToken() : getString(R.string.mapbox_access_token))
-                .origin(origin)
-                .destination(destination)
-                .build()
-                .getRoute(new Callback<DirectionsResponse>() {
-
-                    @Override
-                    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
-                        if(response.body() == null) {
-                            Log.e(TAG, "No routes found, check right user and access token");
-                            return;
-                        } else if (response.body().routes().size() == 0) {
-                            Log.e(TAG, "No Routes found");
-                            return;
-                        }
-
-                        currentRoute = response.body().routes().get(0);
-                        if(navigationMapRoute != null) {
-                            navigationMapRoute.removeRoute();
-                        }else {
-                            navigationMapRoute = new NavigationMapRoute(null, mapView, mapboxMap);
-                        }
-                        navigationMapRoute.addRoute(currentRoute);
-                    }
-
-                    @Override
-                    public void onFailure(Call<DirectionsResponse> call, Throwable t) {
-                        Log.e(TAG, "Error: " + t.getMessage());
                     }
                 });
     }
