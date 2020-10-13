@@ -78,11 +78,11 @@ public class LoginFragment extends Fragment {
                 return false;
             }
             if(!emailInput.contains("@")) {
-                Toast.makeText(getActivity(), "Email invalid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Email harus mengandung @", Toast.LENGTH_SHORT).show();
                 return false;
             }
             if(passwordInput.length() < 8) {
-                Toast.makeText(getActivity(), "Password invalid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Password harus lebih dari 8 karakter", Toast.LENGTH_SHORT).show();
                 return false;
             }
             Toast.makeText(getActivity(), "Login berhasil", Toast.LENGTH_SHORT).show();
