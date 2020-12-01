@@ -116,6 +116,7 @@ public class LoginFragment extends Fragment {
 
     private void doLogin(final String email,final String pass){
         RequestQueue queue = Volley.newRequestQueue(getContext());
+
         StringRequest stringRequest = new StringRequest(POST, UserAPI.URL_LOGIN, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -134,7 +135,7 @@ public class LoginFragment extends Fragment {
                 }
                 Toast.makeText(getContext(), "Selesai", Toast.LENGTH_SHORT).show();
             }
-        }),new Response.ErrorListener() {
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Disini bagian jika response jaringan terdapat ganguan/error
@@ -151,8 +152,8 @@ public class LoginFragment extends Fragment {
                 */
 
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("namaBuku", namaBuku);
-                params.put("pengarang", pengarang);
+                params.put("email", email);
+                params.put("pass", pass);
                 return params;
             }
         };
