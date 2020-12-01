@@ -21,11 +21,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kelompok_a.tubes_sewa_kos.API.UserAPI;
+import com.kelompok_a.tubes_sewa_kos.Model.User;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentLoginBinding;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +44,7 @@ public class LoginFragment extends Fragment {
     private SharedPref sharedPref;
     private String emailInput;
     private String passwordInput;
+    public static Array user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,17 +79,7 @@ public class LoginFragment extends Fragment {
         @Override
         public void onClick(View view) {
             if(validateLogin()) {
-                sharedPref.setIsLogin(true);
-                MainActivity.isLogin = true;
-
                 doLogin(emailInput,passwordInput);
-
-//                MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
-//                Fragment homeFragment = new HomeFragment();
-//                getActivity().getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.fragment_layout, homeFragment)
-//                        .commit();
             }
         }
 
@@ -109,14 +104,12 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(getActivity(), "Password harus lebih dari 8 karakter", Toast.LENGTH_SHORT).show();
                 return false;
             }
-            Toast.makeText(getActivity(), "Login berhasil", Toast.LENGTH_SHORT).show();
             return true;
         }
     }
 
-    private void doLogin(final String email,final String pass){
+    private void doLogin(final String strEmail,final String strPass){
         RequestQueue queue = Volley.newRequestQueue(getContext());
-
         StringRequest stringRequest = new StringRequest(POST, UserAPI.URL_LOGIN, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -126,16 +119,22 @@ public class LoginFragment extends Fragment {
                     //obj.getString("message") digunakan untuk mengambil pesan message dari response
                     if(obj.getString("message").equals("Authenticated"))
                     {
-                        loadFragment(new HomeFragment());
+                        sharedPref.setIsLogin(true);
+                        MainActivity.isLogin = true;
+                        MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
+                        Fragment homeFragment = new HomeFragment();
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_layout, homeFragment)
+                                .commit();
                         Toast.makeText(getContext(), "Login Success", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Error : " +e.toString(), Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getContext(), "Selesai", Toast.LENGTH_SHORT).show();
             }
-        }, new Response.ErrorListener() {
+        },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Disini bagian jika response jaringan terdapat ganguan/error
@@ -150,10 +149,9 @@ public class LoginFragment extends Fragment {
                     dan nama key nya harus sesuai dengan parameter key yang diminta oleh jaringan
                     API.
                 */
-
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("email", email);
-                params.put("pass", pass);
+                params.put("email", strEmail);
+                params.put("password", strPass);
                 return params;
             }
         };
@@ -162,16 +160,16 @@ public class LoginFragment extends Fragment {
         queue.add(stringRequest);
     }
 
-    public void loadFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (Build.VERSION.SDK_INT >= 26) {
-            fragmentTransaction.setReorderingAllowed(false);
-        }
-        MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
-        fragmentTransaction.replace(R.id.fragment_layout, fragment)
-                .detach(this)
-                .attach(this)
-                .commit();
-    }
+//    public void loadFragment(Fragment fragment) {
+//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        if (Build.VERSION.SDK_INT >= 26) {
+//            fragmentTransaction.setReorderingAllowed(false);
+//        }
+//        MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
+//        fragmentTransaction.replace(R.id.fragment_layout, fragment)
+//                .detach(this)
+//                .attach(this)
+//                .commit();
+//    }
 }

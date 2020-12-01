@@ -1,0 +1,107 @@
+Index: app/src/main/java/com/kelompok_a/tubes_sewa_kos/LoginFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.kelompok_a.tubes_sewa_kos;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\n\r\nimport androidx.databinding.DataBindingUtil;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.fragment.app.FragmentManager;\r\nimport androidx.fragment.app.FragmentTransaction;\r\n\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Toast;\r\n\r\nimport com.android.volley.RequestQueue;\r\nimport com.android.volley.Response;\r\nimport com.android.volley.VolleyError;\r\nimport com.android.volley.toolbox.StringRequest;\r\nimport com.android.volley.toolbox.Volley;\r\nimport com.google.android.material.textfield.TextInputEditText;\r\nimport com.kelompok_a.tubes_sewa_kos.API.UserAPI;\r\nimport com.kelompok_a.tubes_sewa_kos.databinding.FragmentLoginBinding;\r\n\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\n\r\nimport java.util.HashMap;\r\nimport java.util.Map;\r\n\r\nimport retrofit2.Call;\r\nimport retrofit2.Callback;\r\n\r\nimport static com.android.volley.Request.Method.POST;\r\n\r\npublic class LoginFragment extends Fragment {\r\n\r\n    private FragmentLoginBinding binding;\r\n    private SharedPref sharedPref;\r\n    private String emailInput;\r\n    private String passwordInput;\r\n\r\n    @Override\r\n    public void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\r\n                             Bundle savedInstanceState) {\r\n        sharedPref = new SharedPref(getActivity());\r\n        binding = DataBindingUtil.inflate(inflater,\r\n                R.layout.fragment_login, container, false);\r\n        View view = binding.getRoot();\r\n\r\n        binding.linkSignup.setOnClickListener(new TextListener());\r\n        binding.btnLogin.setOnClickListener(new ButtonListener());\r\n        return view;\r\n    }\r\n\r\n    public class TextListener implements View.OnClickListener {\r\n        @Override\r\n        public void onClick(View view) {\r\n            Fragment registerFragment = new RegisterFragment();\r\n            getActivity().getSupportFragmentManager()\r\n                    .beginTransaction()\r\n                    .replace(R.id.fragment_layout, registerFragment)\r\n                    .commit();\r\n        }\r\n    }\r\n\r\n    public class ButtonListener implements View.OnClickListener {\r\n        @Override\r\n        public void onClick(View view) {\r\n            if(validateLogin()) {\r\n                sharedPref.setIsLogin(true);\r\n                MainActivity.isLogin = true;\r\n\r\n                doLogin(emailInput,passwordInput);\r\n\r\n//                MainActivity.changeMenu(MainActivity.binding.bottomNavigation);\r\n//                Fragment homeFragment = new HomeFragment();\r\n//                getActivity().getSupportFragmentManager()\r\n//                        .beginTransaction()\r\n//                        .replace(R.id.fragment_layout, homeFragment)\r\n//                        .commit();\r\n            }\r\n        }\r\n\r\n        public boolean validateLogin() {\r\n\r\n            emailInput = binding.inputEmail.getText().toString();\r\n            passwordInput = binding.inputPassword.getText().toString();\r\n\r\n            if(emailInput.isEmpty()) {\r\n                Toast.makeText(getActivity(), \"Email tidak boleh kosong\", Toast.LENGTH_SHORT).show();\r\n                return false;\r\n            }\r\n            if(passwordInput.isEmpty()) {\r\n                Toast.makeText(getActivity(), \"Password tidak boleh kosong\", Toast.LENGTH_SHORT).show();\r\n                return false;\r\n            }\r\n            if(!emailInput.contains(\"@\")) {\r\n                Toast.makeText(getActivity(), \"Email harus mengandung @\", Toast.LENGTH_SHORT).show();\r\n                return false;\r\n            }\r\n            if(passwordInput.length() < 8) {\r\n                Toast.makeText(getActivity(), \"Password harus lebih dari 8 karakter\", Toast.LENGTH_SHORT).show();\r\n                return false;\r\n            }\r\n            Toast.makeText(getActivity(), \"Login berhasil\", Toast.LENGTH_SHORT).show();\r\n            return true;\r\n        }\r\n    }\r\n\r\n    private void doLogin(final String email,final String pass){\r\n        RequestQueue queue = Volley.newRequestQueue(getContext());\r\n        StringRequest stringRequest = new StringRequest(POST, UserAPI.URL_LOGIN, new Response.Listener<String>() {\r\n            @Override\r\n            public void onResponse(String response) {\r\n                try {\r\n                    //Mengubah response string menjadi object\r\n                    JSONObject obj = new JSONObject(response);\r\n                    //obj.getString(\"message\") digunakan untuk mengambil pesan message dari response\r\n                    if(obj.getString(\"message\").equals(\"Authenticated\"))\r\n                    {\r\n                        loadFragment(new HomeFragment());\r\n                        Toast.makeText(getContext(), \"Login Success\", Toast.LENGTH_SHORT).show();\r\n                    }\r\n                } catch (JSONException e) {\r\n                    e.printStackTrace();\r\n                    Toast.makeText(getContext(), \"Error : \" +e.toString(), Toast.LENGTH_SHORT).show();\r\n                }\r\n                Toast.makeText(getContext(), \"Selesai\", Toast.LENGTH_SHORT).show();\r\n            }\r\n        }),new Response.ErrorListener() {\r\n            @Override\r\n            public void onErrorResponse(VolleyError error) {\r\n                //Disini bagian jika response jaringan terdapat ganguan/error\r\n                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();\r\n            }\r\n        }){\r\n            @Override\r\n            protected Map<String, String> getParams()\r\n            {\r\n                /*\r\n                    Disini adalah proses memasukan/mengirimkan parameter key dengan data value,\r\n                    dan nama key nya harus sesuai dengan parameter key yang diminta oleh jaringan\r\n                    API.\r\n                */\r\n\r\n                Map<String, String>  params = new HashMap<String, String>();\r\n                params.put(\"namaBuku\", namaBuku);\r\n                params.put(\"pengarang\", pengarang);\r\n                return params;\r\n            }\r\n        };\r\n\r\n        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi\r\n        queue.add(stringRequest);\r\n    }\r\n\r\n    public void loadFragment(Fragment fragment) {\r\n        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();\r\n        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();\r\n        if (Build.VERSION.SDK_INT >= 26) {\r\n            fragmentTransaction.setReorderingAllowed(false);\r\n        }\r\n        MainActivity.changeMenu(MainActivity.binding.bottomNavigation);\r\n        fragmentTransaction.replace(R.id.fragment_layout, fragment)\r\n                .detach(this)\r\n                .attach(this)\r\n                .commit();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/kelompok_a/tubes_sewa_kos/LoginFragment.java	(revision 572921080bb6f665109ab0dd9e040f3281a85406)
++++ app/src/main/java/com/kelompok_a/tubes_sewa_kos/LoginFragment.java	(date 1606808390194)
+@@ -14,6 +14,7 @@
+ import android.view.ViewGroup;
+ import android.widget.Toast;
+ 
++import com.android.volley.AuthFailureError;
+ import com.android.volley.RequestQueue;
+ import com.android.volley.Response;
+ import com.android.volley.VolleyError;
+@@ -132,7 +133,6 @@
+                     e.printStackTrace();
+                     Toast.makeText(getContext(), "Error : " +e.toString(), Toast.LENGTH_SHORT).show();
+                 }
+-                Toast.makeText(getContext(), "Selesai", Toast.LENGTH_SHORT).show();
+             }
+         }),new Response.ErrorListener() {
+             @Override
+@@ -140,23 +140,16 @@
+                 //Disini bagian jika response jaringan terdapat ganguan/error
+                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+             }
+-        }){
++        })
++        {
+             @Override
+-            protected Map<String, String> getParams()
+-            {
+-                /*
+-                    Disini adalah proses memasukan/mengirimkan parameter key dengan data value,
+-                    dan nama key nya harus sesuai dengan parameter key yang diminta oleh jaringan
+-                    API.
+-                */
+-
++            protected Map<String, String> getParams() throws AuthFailureError{
+                 Map<String, String>  params = new HashMap<String, String>();
+-                params.put("namaBuku", namaBuku);
+-                params.put("pengarang", pengarang);
+-                return params;
++                params.put("email", email);
++                params.put("password", pass);
++                return super.getParams();
+             }
+         };
+-
+         //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
+         queue.add(stringRequest);
+     }
+Index: app/src/main/java/com/kelompok_a/tubes_sewa_kos/Model/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/kelompok_a/tubes_sewa_kos/Model/User.java	(date 1606808791619)
++++ app/src/main/java/com/kelompok_a/tubes_sewa_kos/Model/User.java	(date 1606808791619)
+@@ -0,0 +1,44 @@
++package com.kelompok_a.tubes_sewa_kos.Model;
++
++public class User {
++    private String email, password, noHp, nama;
++
++    public User(String email, String password, String noHp, String nama) {
++        this.email = email;
++        this.password = password;
++        this.noHp = noHp;
++        this.nama = nama;
++    }
++
++    public String getEmail() {
++        return email;
++    }
++
++    public void setEmail(String email) {
++        this.email = email;
++    }
++
++    public String getPassword() {
++        return password;
++    }
++
++    public void setPassword(String password) {
++        this.password = password;
++    }
++
++    public String getNoHp() {
++        return noHp;
++    }
++
++    public void setNoHp(String noHp) {
++        this.noHp = noHp;
++    }
++
++    public String getNama() {
++        return nama;
++    }
++
++    public void setNama(String nama) {
++        this.nama = nama;
++    }
++}
