@@ -78,7 +78,8 @@
                     android:text="@string/login"
                     android:backgroundTint="@color/button_ok"/>
 
-                <TextView android:id="@+id/link_signup"
+                <TextView
+                    android:id="@+id/link_signup"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/belum_ada_account"

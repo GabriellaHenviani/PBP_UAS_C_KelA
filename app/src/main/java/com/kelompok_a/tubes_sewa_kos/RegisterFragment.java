@@ -1,18 +1,15 @@
 package com.kelompok_a.tubes_sewa_kos;
 
 import android.app.ProgressDialog;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -20,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputEditText;
 import com.kelompok_a.tubes_sewa_kos.API.UserAPI;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentRegisterBinding;
 
@@ -34,12 +32,7 @@ import static com.android.volley.Request.Method.POST;
 public class RegisterFragment extends Fragment {
 
     private FragmentRegisterBinding binding;
-    private String namaInput;
-    private String noHpInput;
-    private String emailInput;
-    private String passwordInput;
-
-    private ProgressDialog progressDialog;
+    String namaInput, noHpInput, emailInput, passwordInput;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,13 +46,12 @@ public class RegisterFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false);
         View view = binding.getRoot();
 
-        progressDialog = new ProgressDialog(view.getContext());
-
         binding.linkLogin.setOnClickListener(new TextListener());
         binding.btnRegister.setOnClickListener(new ButtonListener());
         return view;
     }
 
+    //ke fragment login via klik link
     public class TextListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -75,12 +67,13 @@ public class RegisterFragment extends Fragment {
         @Override
         public void onClick(View view) {
             if(validateRegister()) {
-                doRegister(emailInput, passwordInput, namaInput, noHpInput);
+                //register user pake volley RegisterUser()
+                RegisterUser(namaInput, noHpInput, emailInput, passwordInput);
             }
         }
 
+        //pengecekan input sebelum dikirim ke api
         public boolean validateRegister() {
-
             namaInput = binding.inputNama.getText().toString();
             noHpInput = binding.inputNoHp.getText().toString();
             emailInput = binding.inputEmail.getText().toString();
@@ -106,87 +99,68 @@ public class RegisterFragment extends Fragment {
                 Toast.makeText(getActivity(), "Nomor handphone harus 11-12 digit", Toast.LENGTH_SHORT).show();
                 return false;
             }
-            if(!emailInput.contains("@")) {
+            if(!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
                 Toast.makeText(getActivity(), "Email invalid", Toast.LENGTH_SHORT).show();
                 return false;
             }
             if(passwordInput.length() < 8) {
-                Toast.makeText(getActivity(), "Password harus lebih dari 8 karakter", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Password invalid", Toast.LENGTH_SHORT).show();
                 return false;
             }
             return true;
-
         }
     }
 
-    private void doRegister(final String strEmail, final String strPass, final String strNama, final String strNoHp){
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+    //api post untuk register
+    public void RegisterUser(String nama, String noHp, String email, String password) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        showProgress("Memproses register");
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Loading...");
+        progressDialog.setTitle("Registering User");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(POST, UserAPI.URL_REGISTER, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    //Mengubah response string menjadi object
-                    JSONObject obj = new JSONObject(response);
-                    //obj.getString("message") digunakan untuk mengambil pesan message dari response
-                    if(obj.getString("status").equals("Success"))
-                    {
-                        loadFragment(new LoginFragment());
+        StringRequest stringRequest = new StringRequest(POST, UserAPI.URL_REGISTER,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if(obj.getString("status").equals("Success")) {
+                                //pindah ke fragment login/home / suruh verif
+                                Fragment loginFragment = new LoginFragment();
+                                getActivity().getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment_layout, loginFragment)
+                                        .commit();
+                            }
+                            Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        },new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Disini bagian jika response jaringan terdapat ganguan/error
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
+                Toast.makeText(getContext(), nama + noHp + email + password, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
-            protected Map<String, String> getParams()
-            {
-                /*
-                    Disini adalah proses memasukan/mengirimkan parameter key dengan data value,
-                    dan nama key nya harus sesuai dengan parameter key yang diminta oleh jaringan
-                    API.
-                */
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("email", strEmail);
-                params.put("password", strPass);
-                params.put("nama", strNama);
-                params.put("noHp", strNoHp);
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("nama", nama);
+                params.put("noHp", noHp);
+                params.put("email", email);
+                params.put("password", password);
+
                 return params;
             }
         };
-
-        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
-        queue.add(stringRequest);
-    }
-
-    public void loadFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (Build.VERSION.SDK_INT >= 26) {
-            fragmentTransaction.setReorderingAllowed(false);
-        }
-
-        fragmentTransaction.replace(R.id.fragment_layout, fragment)
-                .detach(this)
-                .attach(this)
-                .commit();
-    }
-
-    public void showProgress(String title) {
-        progressDialog.setMessage("Loading....");
-        progressDialog.setTitle(title);
-        progressDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+        requestQueue.add(stringRequest);
     }
 }
