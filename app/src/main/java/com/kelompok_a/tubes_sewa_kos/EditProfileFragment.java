@@ -1,13 +1,17 @@
 package com.kelompok_a.tubes_sewa_kos;
 
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -15,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputEditText;
 import com.kelompok_a.tubes_sewa_kos.API.UserAPI;
 
 import org.json.JSONException;
@@ -26,8 +31,11 @@ import java.util.Map;
 import static com.android.volley.Request.Method.PUT;
 
 public class EditProfileFragment extends Fragment {
-
+    private SharedPref sharedPref;
     private User user;
+    private Button batal, edit;
+    private String nama ="", noHp="";
+    private TextInputEditText etNama, etEmail, etNoHp;
 
     private ProgressDialog progressDialog;
 
@@ -41,10 +49,31 @@ public class EditProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        sharedPref = new SharedPref(getActivity());
 
         progressDialog = new ProgressDialog(view.getContext());
 
+        etEmail = view.findViewById(R.id.input_email);
+        etNama = view.findViewById(R.id.input_nama);
+        etNoHp = view.findViewById(R.id.input_no_hp);
+        batal = view.findViewById(R.id.btn_cancel);
+        edit = view.findViewById(R.id.btn_edit);
+
         init();
+
+        batal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadFragment(new ProfileFragment());
+            }
+        });
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editUser(nama, noHp);
+            }
+        });
 
         return view;
     }
@@ -52,6 +81,12 @@ public class EditProfileFragment extends Fragment {
     public void init()  {
         user = (User) getArguments().getSerializable("user");
 
+        etNama.setText(user.getNama());
+        etNoHp.setText(user.getNoHp());
+        etEmail.setText(user.getEmail());
+
+        nama = user.getNama();
+        noHp = user.getNoHp();
     }
 
     public void editUser(final String strNama, final String strNoHp){
@@ -71,7 +106,8 @@ public class EditProfileFragment extends Fragment {
                     JSONObject obj = new JSONObject(response);
 
                     if(obj.getString("status").equals("Success")) {
-
+                        MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
+                        loadFragment(new ProfileFragment());
                     }
 
                     //obj.getString("message") digunakan untuk mengambil pesan message dari response
@@ -88,7 +124,8 @@ public class EditProfileFragment extends Fragment {
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
-        }){
+        })
+        {
             @Override
             protected Map<String, String> getParams()
             {
@@ -103,10 +140,29 @@ public class EditProfileFragment extends Fragment {
 
                 return params;
             }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + sharedPref.getToken());
+                return params;
+            }
         };
 
         //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
         queue.add(stringRequest);
+    }
+
+    public void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (Build.VERSION.SDK_INT >= 26) {
+            fragmentTransaction.setReorderingAllowed(false);
+        }
+
+        fragmentTransaction.replace(R.id.fragment_layout, fragment)
+                .detach(this)
+                .attach(this)
+                .commit();
     }
 
     public void showProgress(String title) {

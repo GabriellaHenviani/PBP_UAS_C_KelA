@@ -12,16 +12,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.kelompok_a.tubes_sewa_kos.API.KostAPI;
+import com.kelompok_a.tubes_sewa_kos.API.UserAPI;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentHomeBinding;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.android.volley.Request.Method.GET;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private ArrayList<Kos> listKos;
     private RecyclerViewAdapter adapter;
+    private SharedPref sharedPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,28 +53,23 @@ public class HomeFragment extends Fragment {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_home, container, false);
         View view = binding.getRoot();
+        sharedPref = new SharedPref(getActivity());
+
+        listKos = new ArrayList<Kos>();
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         binding.recyclerView.setLayoutManager(layoutManager);
 
         listKos = new ArrayList<>();
-        buatListKos();
 
         adapter = new RecyclerViewAdapter(getActivity(), listKos);
         binding.recyclerView.setAdapter(adapter);
         binding.swipeRefresh.setOnRefreshListener(new RefreshListener());
         binding.searchView.setOnQueryTextListener(new SearchListener());
 
-        return view;
-    }
+        getUser();
 
-    public void buatListKos() {
-        Kos kos1 = new Kos("Kos ABC", "Putri", "Jl Abc no.90", 800000, "https://cdn.styleblueprint.com/wp-content/uploads/2015/12/SB-ATL-ZookHome-9-e1538165814448.jpg", 110.367432, -7.783030);
-        Kos kos2 = new Kos("Kos Damai", "Campuran", "Jl Damai no.12", 500000, "", 110.367695,-7.780134);
-        Kos kos3 = new Kos("Kos Surya", "Putra", "Jl Surya no.55", 600000, "", 110.363089, -7.783149);
-        listKos.add(kos1);
-        listKos.add(kos2);
-        listKos.add(kos3);
+        return view;
     }
 
     public class RefreshListener implements SwipeRefreshLayout.OnRefreshListener {
@@ -87,5 +99,70 @@ public class HomeFragment extends Fragment {
             }
             return false;
         }
+    }
+
+    public void getUser() {
+        //Pendeklarasian queue
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        //Meminta tanggapan string dari URL yang telah disediakan menggunakan method GET
+        //untuk request ini tidak memerlukan parameter
+
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, KostAPI.URL_SELECT
+                , null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
+                try {
+
+                    JSONArray jsonArray = response.getJSONArray("data");
+
+                    if(!listKos.isEmpty())
+                        listKos.clear();
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        //Mengubah data jsonArray tertentu menjadi json Object
+                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+
+                        String nama = jsonObject.optString("nama");
+                        String tipe = jsonObject.optString("tipe");
+                        String alamat = jsonObject.optString("alamat");
+                        String foto = jsonObject.optString("foto");
+                        int harga = jsonObject.optInt("harga");
+                        Double longitude = jsonObject.optDouble("longitude");
+                        Double latitude = jsonObject.optDouble("latitude");
+
+                        //Membuat objek buku
+                        Kos kos = new Kos(nama, tipe, alamat, harga, foto, longitude, latitude);
+
+                        //Menambahkan objek user tadi ke list user
+                        listKos.add(kos);
+                    }
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getContext(), response.optString("message"),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Disini bagian jika response jaringan terdapat ganguan/error
+                Toast.makeText(getContext(), error.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + sharedPref.getToken());
+                return params;
+            }
+        };
+
+        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
+        queue.add(stringRequest);
     }
 }
