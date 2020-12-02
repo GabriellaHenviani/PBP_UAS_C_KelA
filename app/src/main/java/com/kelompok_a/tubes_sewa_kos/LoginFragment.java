@@ -1,6 +1,6 @@
 package com.kelompok_a.tubes_sewa_kos;
 
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -19,22 +19,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.textfield.TextInputEditText;
 import com.kelompok_a.tubes_sewa_kos.API.UserAPI;
-import com.kelompok_a.tubes_sewa_kos.Model.User;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentLoginBinding;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
 
 import static com.android.volley.Request.Method.POST;
 
@@ -44,7 +36,8 @@ public class LoginFragment extends Fragment {
     private SharedPref sharedPref;
     private String emailInput;
     private String passwordInput;
-    public static Array user;
+
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +51,8 @@ public class LoginFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_login, container, false);
         View view = binding.getRoot();
+
+        progressDialog = new ProgressDialog(view.getContext());
 
         binding.linkSignup.setOnClickListener(new TextListener());
         binding.btnLogin.setOnClickListener(new ButtonListener());
@@ -110,6 +105,9 @@ public class LoginFragment extends Fragment {
 
     private void doLogin(final String strEmail,final String strPass){
         RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        showProgress("Memproses login");
+
         StringRequest stringRequest = new StringRequest(POST, UserAPI.URL_LOGIN, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -117,21 +115,19 @@ public class LoginFragment extends Fragment {
                     //Mengubah response string menjadi object
                     JSONObject obj = new JSONObject(response);
                     //obj.getString("message") digunakan untuk mengambil pesan message dari response
-                    if(obj.getString("message").equals("Authenticated"))
+                    if(obj.getString("status").equals("Success"))
                     {
                         sharedPref.setIsLogin(true);
+                        sharedPref.setToken(obj.getString("access_token"));
                         MainActivity.isLogin = true;
                         MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
-                        Fragment homeFragment = new HomeFragment();
-                        getActivity().getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_layout, homeFragment)
-                                .commit();
-                        Toast.makeText(getContext(), "Login Success", Toast.LENGTH_SHORT).show();
+                        loadFragment(new HomeFragment());
+
                     }
+                    Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getContext(), "Error : " +e.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         },new Response.ErrorListener() {
@@ -139,6 +135,7 @@ public class LoginFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 //Disini bagian jika response jaringan terdapat ganguan/error
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         }){
             @Override
@@ -160,16 +157,23 @@ public class LoginFragment extends Fragment {
         queue.add(stringRequest);
     }
 
-//    public void loadFragment(Fragment fragment) {
-//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        if (Build.VERSION.SDK_INT >= 26) {
-//            fragmentTransaction.setReorderingAllowed(false);
-//        }
-//        MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
-//        fragmentTransaction.replace(R.id.fragment_layout, fragment)
-//                .detach(this)
-//                .attach(this)
-//                .commit();
-//    }
+    public void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (Build.VERSION.SDK_INT >= 26) {
+            fragmentTransaction.setReorderingAllowed(false);
+        }
+
+        fragmentTransaction.replace(R.id.fragment_layout, fragment)
+                .detach(this)
+                .attach(this)
+                .commit();
+    }
+
+    public void showProgress(String title) {
+        progressDialog.setMessage("Loading....");
+        progressDialog.setTitle(title);
+        progressDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+    }
 }

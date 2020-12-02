@@ -35,6 +35,7 @@
     <string name="tipe_kost">Tipe Kost</string>
     <string name="batal">Batal</string>
     <string name="tambah">Tambah</string>
+    <string name="edit">Edit</string>
     <string name="tambah_foto">+ Foto</string>
     <string name="harga_kost">Harga Kost</string>
     <string name="imageContentDesc">Image</string>
@@ -42,5 +43,7 @@
     <string name="night_mode">Night mode</string>
     <string name="lihat_di_peta">Peta</string>
     <string name="nama">Nama</string>
-    <string name="update">Update</string>
+    <string name="profile_saya">Profil Saya</string>
+    <string name="bookmark_saya">Bookmark Saya</string>
+    <string name="edit_profile">Edit Profil</string>
 </resources>

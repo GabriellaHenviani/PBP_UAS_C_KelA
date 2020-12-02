@@ -40,4 +40,14 @@ public class SharedPref {
     public boolean isFirstTimeLaunch() {
         return sharedPreferences.getBoolean("IsFirstTimeLaunch", true);
     }
+
+    public void setToken(String token) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("token", token);
+        editor.apply();
+    }
+
+    public String getToken() {
+        return sharedPreferences.getString("token", "");
+    }
 }

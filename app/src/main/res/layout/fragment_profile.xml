@@ -6,6 +6,9 @@
         <variable
             name="profileFragment"
             type="com.kelompok_a.tubes_sewa_kos.ProfileFragment" />
+        <variable
+            name="user"
+            type="com.kelompok_a.tubes_sewa_kos.User" />
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -24,58 +27,68 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/nama_lengkap"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textColor="?attr/textColor"/>
+                    style="@style/TextAppearance.MaterialComponents.Headline4"
+                    android:gravity="center"
+                    android:text="@string/profile_saya"
+                    android:textColor="?attr/textColor"
+                    android:layout_marginBottom="8dp"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/input_nama"
-                        android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="5dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:hint="@string/nama_lengkap"
-                        android:textColor="?attr/textColor"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/text_nama"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="@{user.nama}"
+                            style="@style/TextAppearance.MaterialComponents.Headline6"
+                            android:textColor="?attr/textColor"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
-                    android:text="@string/no_hp"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textColor="?attr/textColor"/>
+                        <TextView
+                            android:id="@+id/text_noHp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:text="@{user.noHp}"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:textColor="?attr/textColor"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+                        <TextView
+                            android:id="@+id/text_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            android:text="@{user.email}"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:textColor="?attr/textColor"/>
+                    </LinearLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/input_no_hp"
-                        android:layout_width="match_parent"
+                    <Button
+                        android:id="@+id/btn_update"
+                        android:layout_width="68dp"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:hint="@string/no_hp"
-                        android:textColor="?attr/textColor"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:text="@string/edit"
+                        android:backgroundTint="@color/button_ok"/>
+                </LinearLayout>
 
                 <Button
-                    android:id="@+id/btn_update"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_bookmark"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
-                    android:layout_gravity="right"
-                    android:text="@string/update"
+                    android:text="@string/bookmark_saya"
                     android:backgroundTint="@color/button_ok"/>
+
                 <Button
                     android:id="@+id/btn_logout"
                     android:layout_width="match_parent"
