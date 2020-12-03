@@ -27,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -125,6 +126,7 @@ public class HomeFragment extends Fragment {
                         //Mengubah data jsonArray tertentu menjadi json Object
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
 
+                        int id = jsonObject.optInt("id");
                         String nama = jsonObject.optString("nama");
                         String tipe = jsonObject.optString("tipe");
                         String alamat = jsonObject.optString("alamat");
@@ -134,7 +136,7 @@ public class HomeFragment extends Fragment {
                         Double latitude = jsonObject.optDouble("latitude");
 
                         //Membuat objek buku
-                        Kos kos = new Kos(nama, tipe, alamat, harga, foto, longitude, latitude);
+                        Kos kos = new Kos(id, nama, tipe, alamat, harga, foto, longitude, latitude);
 
                         //Menambahkan objek user tadi ke list user
                         listKos.add(kos);

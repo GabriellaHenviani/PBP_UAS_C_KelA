@@ -25,6 +25,7 @@ import com.kelompok_a.tubes_sewa_kos.API.UserAPI;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -120,6 +121,14 @@ public class EditProfileFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+//                try {
+//                    String responseBody = new String(error.networkResponse.data, "utf-8");
+//                    JSONObject jsonMessage = new JSONObject(responseBody);
+//                    String message = jsonMessage.getString("message");
+//                    Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+//                } catch (JSONException | UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
                 //Disini bagian jika response jaringan terdapat ganguan/error
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
@@ -137,6 +146,7 @@ public class EditProfileFragment extends Fragment {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("nama", strNama);
                 params.put("noHp", strNoHp);
+//                params.put("email", email);
 
                 return params;
             }
@@ -144,6 +154,7 @@ public class EditProfileFragment extends Fragment {
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Authorization", "Bearer " + sharedPref.getToken());
+                params.put("Content-Type", "application/x-www-form-urlencoded");
                 return params;
             }
         };

@@ -12,7 +12,7 @@ public class Kos implements Serializable {
     private String nama;
     private String tipe;
     private String alamat;
-    private int harga;
+    private int harga, id;
     private String imgURL;
     private double longitude, latitude;
 
@@ -24,6 +24,25 @@ public class Kos implements Serializable {
         this.imgURL = imgURL;
         this.longitude = longitude;
         this.latitude = latitude;
+    }
+
+    public Kos(int id, String nama, String tipe, String alamat, int harga, String imgURL, Double longitude, Double latitude) {
+        this.id = id;
+        this.nama = nama;
+        this.tipe = tipe;
+        this.alamat = alamat;
+        this.harga = harga;
+        this.imgURL = imgURL;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNama() {
