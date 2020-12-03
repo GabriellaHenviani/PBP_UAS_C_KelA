@@ -35,7 +35,6 @@ public class EditProfileFragment extends Fragment {
     private SharedPref sharedPref;
     private User user;
     private Button batal, edit;
-    private String nama ="", noHp="";
     private TextInputEditText etNama, etEmail, etNoHp;
 
     private ProgressDialog progressDialog;
@@ -72,7 +71,7 @@ public class EditProfileFragment extends Fragment {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editUser(nama, noHp);
+                editUser();
             }
         });
 
@@ -86,11 +85,10 @@ public class EditProfileFragment extends Fragment {
         etNoHp.setText(user.getNoHp());
         etEmail.setText(user.getEmail());
 
-        nama = user.getNama();
-        noHp = user.getNoHp();
+
     }
 
-    public void editUser(final String strNama, final String strNoHp){
+    public void editUser(){
 
         //Pendeklarasian queue
         RequestQueue queue = Volley.newRequestQueue(getContext());
@@ -106,7 +104,7 @@ public class EditProfileFragment extends Fragment {
                     //Mengubah response string menjadi object
                     JSONObject obj = new JSONObject(response);
 
-                    if(obj.getString("status").equals("Success")) {
+                    if(obj.getString("message").equals("Update User Success")) {
                         MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
                         loadFragment(new ProfileFragment());
                     }
@@ -121,14 +119,14 @@ public class EditProfileFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                try {
-//                    String responseBody = new String(error.networkResponse.data, "utf-8");
-//                    JSONObject jsonMessage = new JSONObject(responseBody);
-//                    String message = jsonMessage.getString("message");
-//                    Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
-//                } catch (JSONException | UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    String responseBody = new String(error.networkResponse.data, "utf-8");
+                    JSONObject jsonMessage = new JSONObject(responseBody);
+                    String message = jsonMessage.getString("message");
+                    Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 //Disini bagian jika response jaringan terdapat ganguan/error
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
@@ -144,8 +142,8 @@ public class EditProfileFragment extends Fragment {
                     API.
                 */
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("nama", strNama);
-                params.put("noHp", strNoHp);
+                params.put("nama", etNama.getText().toString());
+                params.put("noHp", etNoHp.getText().toString());
 //                params.put("email", email);
 
                 return params;
