@@ -1,5 +1,6 @@
 package com.kelompok_a.tubes_sewa_kos;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -40,6 +41,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<Kos> listKos;
     private RecyclerViewAdapter adapter;
     private SharedPref sharedPref;
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,8 @@ public class HomeFragment extends Fragment {
                 inflater, R.layout.fragment_home, container, false);
         View view = binding.getRoot();
         sharedPref = new SharedPref(getActivity());
+
+        progressDialog = new ProgressDialog(view.getContext());
 
         listKos = new ArrayList<Kos>();
 
@@ -106,6 +110,8 @@ public class HomeFragment extends Fragment {
         //Pendeklarasian queue
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
+        showProgress("Menampilkan daftar kost");
+
         //Meminta tanggapan string dari URL yang telah disediakan menggunakan method GET
         //untuk request ini tidak memerlukan parameter
 
@@ -147,6 +153,7 @@ public class HomeFragment extends Fragment {
                 }
                 Toast.makeText(getContext(), response.optString("message"),
                         Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -154,6 +161,7 @@ public class HomeFragment extends Fragment {
                 //Disini bagian jika response jaringan terdapat ganguan/error
                 Toast.makeText(getContext(), error.getMessage(),
                         Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         }){
             @Override
@@ -166,5 +174,12 @@ public class HomeFragment extends Fragment {
 
         //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
         queue.add(stringRequest);
+    }
+
+    public void showProgress(String title) {
+        progressDialog.setMessage("Loading....");
+        progressDialog.setTitle(title);
+        progressDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
     }
 }

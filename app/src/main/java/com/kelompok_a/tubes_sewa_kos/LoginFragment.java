@@ -89,14 +89,12 @@ public class LoginFragment extends Fragment {
             if(emailInput.isEmpty() || passwordInput.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailInput).matches() || passwordInput.length() < 8) {
                 if(emailInput.isEmpty()) {
                     binding.inputEmail.setError("Email tidak boleh kosong");
+                } else if(!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+                    binding.inputEmail.setError("Email harus mengandung @");
                 }
                 if(passwordInput.isEmpty()) {
                     binding.inputPassword.setError("Password tidak boleh kosong");
-                }
-                if(!emailInput.contains("@")) {
-                    binding.inputEmail.setError("Email harus mengandung @");
-                }
-                if(passwordInput.length() < 8) {
+                } else if(passwordInput.length() < 8) {
                     binding.inputPassword.setError("Password harus minimal 8 karakter");
                 }
                 return false;
@@ -124,7 +122,6 @@ public class LoginFragment extends Fragment {
                         MainActivity.isLogin = true;
                         MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
                         loadFragment(new HomeFragment());
-
                     }
                     Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
@@ -143,8 +140,6 @@ public class LoginFragment extends Fragment {
                 } catch (JSONException | UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                //Disini bagian jika response jaringan terdapat ganguan/error
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }){

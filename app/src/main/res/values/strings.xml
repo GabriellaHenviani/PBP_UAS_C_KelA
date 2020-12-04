@@ -28,7 +28,7 @@
 
     <string name="slide_2_title">Yuk Kost Aja</string>
     <string name="slide_2_desc">Yuk cari kost idaman kamu!</string>
-
+    <string name="daftar_kost">Daftar Kost</string>
     <string name="tambah_kost">Tambah Kost</string>
     <string name="nama_kost">Nama Kost</string>
     <string name="alamat_kost">Alamat Kost</string>

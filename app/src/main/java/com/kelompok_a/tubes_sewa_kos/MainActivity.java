@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         .commit();
                 break;
 
-            case R.id.tambahKos:
+            case R.id.daftarKos:
+                //Ganti fragment ini
                 Fragment tambahKosFragment = new TambahKosFragment();
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -100,12 +101,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if(isLogin) {
             navigationView.getMenu().findItem(R.id.login).setVisible(false);
             navigationView.getMenu().findItem(R.id.profile).setVisible(true);
-            navigationView.getMenu().findItem(R.id.tambahKos).setVisible(true);
+            navigationView.getMenu().findItem(R.id.daftarKos).setVisible(true);
         }
         else {
             navigationView.getMenu().findItem(R.id.login).setVisible(true);
             navigationView.getMenu().findItem(R.id.profile).setVisible(false);
-            navigationView.getMenu().findItem(R.id.tambahKos).setVisible(false);
+            navigationView.getMenu().findItem(R.id.daftarKos).setVisible(false);
         }
     }
 

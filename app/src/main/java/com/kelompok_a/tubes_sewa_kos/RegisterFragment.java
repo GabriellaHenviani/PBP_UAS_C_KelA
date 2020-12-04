@@ -24,6 +24,7 @@ import com.kelompok_a.tubes_sewa_kos.databinding.FragmentRegisterBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,12 +33,12 @@ import static com.android.volley.Request.Method.POST;
 public class RegisterFragment extends Fragment {
 
     private FragmentRegisterBinding binding;
-    String namaInput, noHpInput, emailInput, passwordInput;
+    private String namaInput, noHpInput, emailInput, passwordInput;
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -46,8 +47,11 @@ public class RegisterFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false);
         View view = binding.getRoot();
 
+        progressDialog = new ProgressDialog(view.getContext());
+
         binding.linkLogin.setOnClickListener(new TextListener());
         binding.btnRegister.setOnClickListener(new ButtonListener());
+
         return view;
     }
 
@@ -87,20 +91,17 @@ public class RegisterFragment extends Fragment {
                 }
                 if(noHpInput.isEmpty()) {
                     binding.inputNoHp.setError("Nomor handphone tidak boleh kosong");
+                } else if(noHpInput.length() < 11 || noHpInput.length() > 12) {
+                    binding.inputNoHp.setError("Nomor handphone harus 11-12 digit");
                 }
                 if(emailInput.isEmpty()) {
                     binding.inputEmail.setError("Email tidak boleh kosong");
+                } else if(!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+                    binding.inputEmail.setError("Email harus mengandung @");
                 }
                 if(passwordInput.isEmpty()) {
                     binding.inputPassword.setError("Password tidak boleh kosong");
-                }
-                if(noHpInput.length() < 11 || noHpInput.length() > 12) {
-                    binding.inputNoHp.setError("Nomor handphone harus 11-12 digit");
-                }
-                if(!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
-                    binding.inputEmail.setError("Email harus mengandung @");
-                }
-                if(passwordInput.length() < 8) {
+                } else if(passwordInput.length() < 8) {
                     binding.inputPassword.setError("Password harus minimal 8 karater");
                 }
                 return false;
@@ -113,12 +114,7 @@ public class RegisterFragment extends Fragment {
     public void RegisterUser(String nama, String noHp, String email, String password) {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Loading...");
-        progressDialog.setTitle("Registering User");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+        showProgress("Registering...");
 
         StringRequest stringRequest = new StringRequest(POST, UserAPI.URL_REGISTER,
                 new Response.Listener<String>() {
@@ -143,9 +139,15 @@ public class RegisterFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data, "utf-8");
+                    JSONObject jsonMessage = new JSONObject(responseBody);
+                    String message = jsonMessage.getString("message");
+                    Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), nama + noHp + email + password, Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -160,5 +162,12 @@ public class RegisterFragment extends Fragment {
             }
         };
         requestQueue.add(stringRequest);
+    }
+
+    public void showProgress(String title) {
+        progressDialog.setMessage("Loading....");
+        progressDialog.setTitle(title);
+        progressDialog.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
     }
 }
