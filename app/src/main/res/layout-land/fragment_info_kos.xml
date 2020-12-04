@@ -26,10 +26,10 @@
                 <ImageView
                     android:id="@+id/profile_img"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
+                    android:layout_height="300dp"
+                    android:scaleType="centerCrop"
                     android:contentDescription="@string/imageContentDesc"
-                    android:src="@drawable/logokost" />
+                    bind:imgURL="@{kos.imgURL}" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -48,6 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
+                        android:text="@{kos.nama}"
                         android:textColor="?attr/textColor" />
                 </LinearLayout>
 
@@ -67,6 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
+                        android:text="@{kos.tipe}"
                         android:textColor="?attr/textColor"/>
                 </LinearLayout>
 
@@ -86,6 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
+                        android:text="@{kos.alamat}"
                         android:textColor="?attr/textColor"/>
                 </LinearLayout>
 
@@ -105,6 +108,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
+                        android:text="@{kos.harga}"
                         android:textColor="?attr/textColor"/>
                 </LinearLayout>
 

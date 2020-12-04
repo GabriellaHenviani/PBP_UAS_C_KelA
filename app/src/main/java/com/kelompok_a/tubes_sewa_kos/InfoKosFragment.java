@@ -20,11 +20,8 @@ import com.kelompok_a.tubes_sewa_kos.databinding.FragmentInfoKosBinding;
 
 public class InfoKosFragment extends Fragment {
 
-    Kos kos;
+    private Kos kos;
     private FragmentInfoKosBinding binding;
-    Button back_btn, map_btn;
-    TextView text_nama_kos, text_tipe_kos, text_alamat_kos, text_harga_kos;
-    ImageView imageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,30 +35,8 @@ public class InfoKosFragment extends Fragment {
         View view = binding.getRoot();
         kos = (Kos) getArguments().getSerializable("kos");
 
-        back_btn = view.findViewById(R.id.back_btn);
-        map_btn = view.findViewById(R.id.map_btn);
-        text_nama_kos = view.findViewById(R.id.text_nama_kos);
-        text_tipe_kos = view.findViewById(R.id.text_tipe_kos);
-        text_alamat_kos = view.findViewById(R.id.text_alamat_kos);
-        text_harga_kos = view.findViewById(R.id.text_harga_kos);
-        imageView = view.findViewById(R.id.profile_img);
+        binding.setKos(kos);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        binding.textNamaKos.setText(kos.getNama());
-        binding.textTipeKos.setText(kos.getTipe());
-        binding.textAlamatKos.setText(kos.getAlamat());
-        binding.textHargaKos.setText(String.valueOf(kos.getHarga()));
-        Glide.with(this)
-                .load(kos.getImgURL())
-                .placeholder(R.drawable.logokost)
-                .centerCrop()
-                .into(binding.profileImg);
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,5 +61,7 @@ public class InfoKosFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        return view;
     }
 }

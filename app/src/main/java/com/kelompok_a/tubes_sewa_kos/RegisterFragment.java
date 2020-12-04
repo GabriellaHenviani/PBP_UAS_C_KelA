@@ -79,32 +79,30 @@ public class RegisterFragment extends Fragment {
             emailInput = binding.inputEmail.getText().toString();
             passwordInput = binding.inputPassword.getText().toString();
 
-            if(namaInput.isEmpty()) {
-                Toast.makeText(getActivity(), "Nama lengkap tidak boleh kosong", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if(noHpInput.isEmpty()) {
-                Toast.makeText(getActivity(), "Nomor handphone tidak boleh kosong", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if(emailInput.isEmpty()) {
-                Toast.makeText(getActivity(), "Email tidak boleh kosong", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if(passwordInput.isEmpty()) {
-                Toast.makeText(getActivity(), "Password tidak boleh kosong", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if(noHpInput.length() < 11 || noHpInput.length() > 12) {
-                Toast.makeText(getActivity(), "Nomor handphone harus 11-12 digit", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if(!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
-                Toast.makeText(getActivity(), "Email invalid", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if(passwordInput.length() < 8) {
-                Toast.makeText(getActivity(), "Password invalid", Toast.LENGTH_SHORT).show();
+            if(namaInput.isEmpty() || noHpInput.isEmpty() || emailInput.isEmpty() || passwordInput.isEmpty() ||
+                    noHpInput.length() < 11 || noHpInput.length() > 12 || !Patterns.EMAIL_ADDRESS.matcher(emailInput).matches() ||
+                    passwordInput.length() < 8) {
+                if(namaInput.isEmpty()) {
+                    binding.inputNama.setError("Nama lengkap tidak boleh kosong");
+                }
+                if(noHpInput.isEmpty()) {
+                    binding.inputNoHp.setError("Nomor handphone tidak boleh kosong");
+                }
+                if(emailInput.isEmpty()) {
+                    binding.inputEmail.setError("Email tidak boleh kosong");
+                }
+                if(passwordInput.isEmpty()) {
+                    binding.inputPassword.setError("Password tidak boleh kosong");
+                }
+                if(noHpInput.length() < 11 || noHpInput.length() > 12) {
+                    binding.inputNoHp.setError("Nomor handphone harus 11-12 digit");
+                }
+                if(!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+                    binding.inputEmail.setError("Email harus mengandung @");
+                }
+                if(passwordInput.length() < 8) {
+                    binding.inputPassword.setError("Password harus minimal 8 karater");
+                }
                 return false;
             }
             return true;

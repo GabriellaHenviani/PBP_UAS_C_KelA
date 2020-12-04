@@ -104,7 +104,7 @@ public class EditProfileFragment extends Fragment {
                     //Mengubah response string menjadi object
                     JSONObject obj = new JSONObject(response);
 
-                    if(obj.getString("message").equals("Update User Success")) {
+                    if(obj.getString("status").equals("Success")) {
                         MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
                         loadFragment(new ProfileFragment());
                     }

@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
+import com.kelompok_a.tubes_sewa_kos.API.KostAPI;
 
 import java.io.Serializable;
 
@@ -77,7 +78,7 @@ public class Kos implements Serializable {
     }
 
     public String getImgURL() {
-        return imgURL;
+        return KostAPI.URL_IMAGES + imgURL;
     }
 
     public void setImgURL(String imgURL) {

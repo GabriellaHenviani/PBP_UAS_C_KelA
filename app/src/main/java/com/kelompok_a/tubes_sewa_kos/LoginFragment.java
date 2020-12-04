@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputEditText;
 import com.kelompok_a.tubes_sewa_kos.API.UserAPI;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentLoginBinding;
 
@@ -84,20 +86,19 @@ public class LoginFragment extends Fragment {
             emailInput = binding.inputEmail.getText().toString();
             passwordInput = binding.inputPassword.getText().toString();
 
-            if(emailInput.isEmpty()) {
-                Toast.makeText(getActivity(), "Email tidak boleh kosong", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if(passwordInput.isEmpty()) {
-                Toast.makeText(getActivity(), "Password tidak boleh kosong", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if(!emailInput.contains("@")) {
-                Toast.makeText(getActivity(), "Email harus mengandung @", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if(passwordInput.length() < 8) {
-                Toast.makeText(getActivity(), "Password harus lebih dari 8 karakter", Toast.LENGTH_SHORT).show();
+            if(emailInput.isEmpty() || passwordInput.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailInput).matches() || passwordInput.length() < 8) {
+                if(emailInput.isEmpty()) {
+                    binding.inputEmail.setError("Email tidak boleh kosong");
+                }
+                if(passwordInput.isEmpty()) {
+                    binding.inputPassword.setError("Password tidak boleh kosong");
+                }
+                if(!emailInput.contains("@")) {
+                    binding.inputEmail.setError("Email harus mengandung @");
+                }
+                if(passwordInput.length() < 8) {
+                    binding.inputPassword.setError("Password harus minimal 8 karakter");
+                }
                 return false;
             }
             return true;
