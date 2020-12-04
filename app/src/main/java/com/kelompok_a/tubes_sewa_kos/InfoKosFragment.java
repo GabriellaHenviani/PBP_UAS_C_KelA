@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentInfoKosBinding;
@@ -34,7 +35,7 @@ public class InfoKosFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_info_kos, container, false);
         View view = binding.getRoot();
         kos = (Kos) getArguments().getSerializable("kos");
-
+        
         binding.setKos(kos);
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +51,11 @@ public class InfoKosFragment extends Fragment {
             }
         });
 
+        if(kos.getLongitude() == 0 || kos.getLatitude() == 0) {
+            binding.mapBtn.setEnabled(false);
+        } else
+            binding.mapBtn.setEnabled(true);
+
         binding.mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,6 +65,12 @@ public class InfoKosFragment extends Fragment {
                 bundle.putDouble("lat", kos.getLatitude());
                 intent.putExtra("coord", bundle);
                 startActivity(intent);
+            }
+        });
+        binding.btnBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

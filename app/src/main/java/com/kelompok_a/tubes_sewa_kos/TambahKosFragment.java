@@ -21,6 +21,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentTambahKosBinding;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 public class TambahKosFragment extends Fragment {
 
     public static final int CAMERA_PERM_CODE = 101;
@@ -44,6 +47,25 @@ public class TambahKosFragment extends Fragment {
         View view = binding.getRoot();
 
         binding.btnCamera.setOnClickListener(new CameraButtonListener());
+        binding.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment homeFragment = new HomeFragment();
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_layout, homeFragment)
+                        .commit();
+            }
+        });
+        binding.btnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MapSelectActivity.class);
+                intent.putExtra("lng", 0);
+                intent.putExtra("lat", 0);
+                startActivityForResult(intent, 77);
+            }
+        });
 
         populateDropdown(view);
         return view;
@@ -96,9 +118,21 @@ public class TambahKosFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == CAMERA_REQUEST_CODE) {
             Bitmap image = (Bitmap) data.getExtras().get("data");
             binding.imageView.setImageBitmap(image);
+        }
+        if(requestCode == 77) {
+            if (resultCode == RESULT_OK) {
+                double lng = data.getDoubleExtra("lng", 0);
+                double lat = data.getDoubleExtra("lat", 0);
+                //ambil result
+                Toast.makeText(getContext(), String.valueOf(lng) + "\n" + String.valueOf(lat), Toast.LENGTH_SHORT).show();
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //cancelled
+            }
         }
     }
 }
