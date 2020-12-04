@@ -86,10 +86,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             case R.id.daftarKos:
                 //Ganti fragment ini
-                Fragment tambahKosFragment = new TambahKosFragment();
+                Fragment daftarKosFragment = new DaftarKosFragment();
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_layout, tambahKosFragment)
+                        .replace(R.id.fragment_layout, daftarKosFragment)
                         .commit();
                 break;
         }

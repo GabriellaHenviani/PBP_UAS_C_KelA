@@ -8,4 +8,5 @@ public class KostAPI {
     public static final String URL_UPDATE = ROOT_API+"kost/";
     public static final String URL_DELETE = ROOT_API+"kost/";
     public static final String URL_IMAGES = ROOT_URL+"public/storage/images/";
+    public static final String URL_SELECT_KOST_USER = ROOT_API+"kostUser";
 }
