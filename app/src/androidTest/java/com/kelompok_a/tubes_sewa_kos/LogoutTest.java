@@ -42,7 +42,7 @@ public class LogoutTest {
 
     @Test
     public void logoutTest() {
-        onView(isRoot()).perform(waitFor(3000));
+        onView(isRoot()).perform(waitFor(5000));
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.login), withContentDescription("Login"),
                         childAtPosition(
@@ -63,7 +63,7 @@ public class LogoutTest {
                                         0),
                                 1),
                         isDisplayed()));
-        textInputEditText.perform(replaceText("abcdef123@gmail.com"), closeSoftKeyboard());
+        textInputEditText.perform(replaceText("aldrioctogaliani19@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText2 = onView(
                 allOf(withId(R.id.input_password),
@@ -73,7 +73,7 @@ public class LogoutTest {
                                         0),
                                 1),
                         isDisplayed()));
-        textInputEditText2.perform(replaceText("abcdef123"), closeSoftKeyboard());
+        textInputEditText2.perform(replaceText("aldriocto123"), closeSoftKeyboard());
 
         ViewInteraction materialButton3 = onView(
                 allOf(withId(R.id.btn_login), withText("Login"),
@@ -95,6 +95,8 @@ public class LogoutTest {
                                 3),
                         isDisplayed()));
         bottomNavigationItemView2.perform(click());
+
+        onView(isRoot()).perform(waitFor(5000));
 
         ViewInteraction materialButton4 = onView(
                 allOf(withId(R.id.btn_logout), withText("Logout"),
