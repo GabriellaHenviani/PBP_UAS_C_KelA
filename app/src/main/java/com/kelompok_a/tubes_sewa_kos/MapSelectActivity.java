@@ -182,8 +182,14 @@ public class MapSelectActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
+        Style.Builder style;
+        SharedPref sharedPref = new SharedPref(this);
+        if(sharedPref.loadNightModeState())
+            style = new Style.Builder().fromUri(Style.DARK);
+        else
+            style = new Style.Builder().fromUri(Style.MAPBOX_STREETS);
 
-        mapboxMap.setStyle(new Style.Builder().fromUri(Style.MAPBOX_STREETS),
+        mapboxMap.setStyle(style,
                 new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {

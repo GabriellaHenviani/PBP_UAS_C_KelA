@@ -22,6 +22,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -46,6 +47,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -60,7 +62,8 @@ public class TambahKosFragment extends Fragment {
     public static final int GALLERY_REQUEST_CODE = 104;
     private FragmentTambahKosBinding binding;
     double lng = 0, lat = 0;
-    String encodedImage=""; //string untuk upload image
+    private String encodedImage=""; //string untuk upload image
+    private String selectedTipeKost;
     private SharedPref sharedPref;
     private ProgressDialog progressDialog;
 
@@ -169,14 +172,16 @@ public class TambahKosFragment extends Fragment {
             };
         });
 
-        populateDropdown(view);
+        populateDropdown();
 
         status = getArguments().getString("status");
         if(status.equals("edit")) {
+            showProgress("Menampilkan data kost");
             binding.judulFragment.setText(R.string.edit_kost);
             kos = (Kos) getArguments().getSerializable("kos");
             binding.setKos(kos);
-            binding.btnAdd.setText("Save"); //Line 129
+            binding.btnAdd.setText(R.string.edit); //Line 129
+            selectedTipeKost = kos.getTipe();
             lng = kos.getLongitude();
             lat = kos.getLatitude();
             Glide.with(view.getContext())
@@ -184,6 +189,7 @@ public class TambahKosFragment extends Fragment {
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(binding.imageView);
+            progressDialog.dismiss();
         }
         return view;
     }
@@ -191,7 +197,7 @@ public class TambahKosFragment extends Fragment {
     private void editKos(String nama, String tipe, String alamat, String harga, double lng, double lat) { //Line 137
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        showProgress("Mengedit Kos...");
+        showProgress("Mengedit Kost");
 
         StringRequest stringRequest = new StringRequest(PUT, KostAPI.URL_UPDATE + String.valueOf(kos.getId()),
                 new Response.Listener<String>() {
@@ -256,7 +262,7 @@ public class TambahKosFragment extends Fragment {
     public void tambahKos(String nama, String tipe, String alamat, String harga, double lng, double lat) {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        showProgress("Menambahkan Kos...");
+        showProgress("Menambahkan Kost");
 
         StringRequest stringRequest = new StringRequest(POST, KostAPI.URL_ADD,
                 new Response.Listener<String>() {
@@ -321,16 +327,20 @@ public class TambahKosFragment extends Fragment {
         progressDialog.show();
     }
 
-    public void populateDropdown(View view) {
-        String[] kost = new String[] {"Putra", "Putri", "Campuran"};
+    public void populateDropdown() {
+        String[] tipeKost = new String[] {"Putra", "Putri", "Campuran"};
+        selectedTipeKost = "";
 
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(
-                        getContext(),
-                        R.layout.tipe_kost_dropdown_menu,
-                        kost);
-
-        binding.tipeKostDropdown.setAdapter(adapter);
+        ArrayAdapter<String> adapterTipe = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
+                R.layout.tipe_kost_dropdown_menu, R.id.item_list, tipeKost);
+        binding.tipeKostDropdown.setAdapter(adapterTipe);
+        binding.tipeKostDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedTipeKost = tipeKost[i];
+                //System.out.println(kos.getId());
+            }
+        });
     }
 
     public void askCameraPermission() {

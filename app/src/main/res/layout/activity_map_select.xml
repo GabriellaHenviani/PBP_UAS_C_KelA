@@ -15,7 +15,7 @@
         />
 
     <LinearLayout
-        android:layout_margin="50dp"
+        android:layout_margin="28dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|top"
-        android:layout_margin="16dp"
+        android:layout_margin="28dp"
         android:tint="@android:color/white"
         app:srcCompat="@android:drawable/ic_search_category_default" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

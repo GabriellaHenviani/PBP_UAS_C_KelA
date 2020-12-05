@@ -19,6 +19,6 @@
         android:layout_gravity="bottom"
         android:backgroundTint="@color/button_ok"
         android:text="@string/kembali"
-        android:layout_margin="42dp"/>
+        android:layout_margin="28dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
