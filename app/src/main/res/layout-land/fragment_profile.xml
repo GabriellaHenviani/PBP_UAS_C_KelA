@@ -10,15 +10,13 @@
             name="user"
             type="com.kelompok_a.tubes_sewa_kos.User" />
     </data>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:context=".ProfileFragment">
-
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -50,7 +48,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
-                            android:text="@string/nama_lengkap"
+                            android:text="@{user.nama}"
                             style="@style/TextAppearance.MaterialComponents.Headline6"
                             android:textColor="?attr/textColor"/>
 
@@ -59,8 +57,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="5dp"
-                            android:text="@string/no_hp"
-                            style="@style/TextAppearance.MaterialComponents.Headline6"
+                            android:text="@{user.noHp}"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:textColor="?attr/textColor"/>
 
                         <TextView
@@ -68,14 +66,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="5dp"
-                            android:text="@string/email"
-                            style="@style/TextAppearance.MaterialComponents.Headline6"
+                            android:text="@{user.email}"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:textColor="?attr/textColor"/>
                     </LinearLayout>
 
                     <Button
                         android:id="@+id/btn_update"
-                        android:layout_width="wrap_content"
+                        android:layout_width="68dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:layout_marginBottom="24dp"

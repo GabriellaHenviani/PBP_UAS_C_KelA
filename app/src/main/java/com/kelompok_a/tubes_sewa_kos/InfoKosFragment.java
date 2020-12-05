@@ -23,6 +23,7 @@ public class InfoKosFragment extends Fragment {
 
     private Kos kos;
     private FragmentInfoKosBinding binding;
+    private SharedPref sharedPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class InfoKosFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_info_kos, container, false);
         View view = binding.getRoot();
         kos = (Kos) getArguments().getSerializable("kos");
+        sharedPref = new SharedPref(getActivity());
         
         binding.setKos(kos);
 
@@ -73,6 +75,11 @@ public class InfoKosFragment extends Fragment {
 
             }
         });
+
+        if(kos.getIdUser() != sharedPref.getIdUser()) {
+            binding.editBtn.setVisibility(View.GONE);
+            binding.hapusBtn.setVisibility(View.GONE);
+        }
 
         return view;
     }

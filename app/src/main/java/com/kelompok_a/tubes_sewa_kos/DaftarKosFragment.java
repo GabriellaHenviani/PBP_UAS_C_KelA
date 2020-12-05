@@ -121,9 +121,10 @@ public class DaftarKosFragment extends Fragment {
                         int harga = jsonObject.optInt("harga");
                         Double longitude = jsonObject.optDouble("longitude");
                         Double latitude = jsonObject.optDouble("latitude");
+                        int idUser = jsonObject.optInt("idUser");
 
                         //Membuat objek buku
-                        Kos kos = new Kos(nama, tipe, alamat, harga, foto, longitude, latitude);
+                        Kos kos = new Kos(nama, tipe, alamat, harga, foto, longitude, latitude, idUser);
 
                         //Menambahkan objek user tadi ke list user
                         listKos.add(kos);

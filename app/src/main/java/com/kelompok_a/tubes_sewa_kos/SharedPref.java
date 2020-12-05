@@ -50,4 +50,14 @@ public class SharedPref {
     public String getToken() {
         return sharedPreferences.getString("token", "");
     }
+
+    public void setIdUser(int id) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("idUser", id);
+        editor.apply();
+    }
+
+    public int getIdUser() {
+        return sharedPreferences.getInt("idUser", 0);
+    }
 }

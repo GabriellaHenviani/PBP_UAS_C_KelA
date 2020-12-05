@@ -155,6 +155,7 @@ public class ProfileFragment extends Fragment {
                     {
                         sharedPref.setIsLogin(false);
                         sharedPref.setToken("");
+                        sharedPref.setIdUser(-1);
                         MainActivity.isLogin = false;
                         MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
                         loadFragment(new HomeFragment());

@@ -119,6 +119,7 @@ public class LoginFragment extends Fragment {
                     {
                         sharedPref.setIsLogin(true);
                         sharedPref.setToken(obj.getString("access_token"));
+                        sharedPref.setIdUser(obj.getJSONObject("user").getInt("id"));
                         MainActivity.isLogin = true;
                         MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
                         loadFragment(new HomeFragment());

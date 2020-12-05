@@ -124,6 +124,7 @@ public class TambahKosFragment extends Fragment {
 
         status = getArguments().getString("status");
         if(status.equals("edit")) {
+            binding.judulFragment.setText(R.string.edit_kost);
             kos = (Kos) getArguments().getSerializable("kos");
             binding.setKos(kos);
             Glide.with(view.getContext())
