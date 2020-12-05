@@ -94,7 +94,6 @@
                         android:layout_height="match_parent"
                         android:hint="@string/tipe_kost"
                         android:inputType="none"
-                        android:text="@{kos.tipe}"
                         android:textColor="?attr/textColor"/>
 
                 </com.google.android.material.textfield.TextInputLayout>

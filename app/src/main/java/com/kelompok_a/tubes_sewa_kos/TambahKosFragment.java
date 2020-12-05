@@ -89,6 +89,8 @@ public class TambahKosFragment extends Fragment {
         progressDialog = new ProgressDialog(view.getContext());
         sharedPref = new SharedPref(getActivity());
 
+        selectedTipeKost = "";
+
         binding.btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,8 +174,6 @@ public class TambahKosFragment extends Fragment {
             };
         });
 
-        populateDropdown();
-
         status = getArguments().getString("status");
         if(status.equals("edit")) {
             showProgress("Menampilkan data kost");
@@ -181,7 +181,10 @@ public class TambahKosFragment extends Fragment {
             kos = (Kos) getArguments().getSerializable("kos");
             binding.setKos(kos);
             binding.btnAdd.setText(R.string.edit); //Line 129
+
             selectedTipeKost = kos.getTipe();
+            binding.tipeKostDropdown.setText(selectedTipeKost, false);
+
             lng = kos.getLongitude();
             lat = kos.getLatitude();
             Glide.with(view.getContext())
@@ -191,6 +194,7 @@ public class TambahKosFragment extends Fragment {
                     .into(binding.imageView);
             progressDialog.dismiss();
         }
+        populateDropdown();
         return view;
     }
 
@@ -329,7 +333,7 @@ public class TambahKosFragment extends Fragment {
 
     public void populateDropdown() {
         String[] tipeKost = new String[] {"Putra", "Putri", "Campuran"};
-        selectedTipeKost = "";
+
 
         ArrayAdapter<String> adapterTipe = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
                 R.layout.tipe_kost_dropdown_menu, R.id.item_list, tipeKost);
@@ -338,7 +342,7 @@ public class TambahKosFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedTipeKost = tipeKost[i];
-                //System.out.println(kos.getId());
+
             }
         });
     }
