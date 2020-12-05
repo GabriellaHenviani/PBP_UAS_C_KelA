@@ -59,8 +59,6 @@ public class HomeFragment extends Fragment {
 
         progressDialog = new ProgressDialog(view.getContext());
 
-        listKos = new ArrayList<Kos>();
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         binding.recyclerView.setLayoutManager(layoutManager);
 
