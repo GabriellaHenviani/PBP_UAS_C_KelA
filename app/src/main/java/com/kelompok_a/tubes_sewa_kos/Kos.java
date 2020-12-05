@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kelompok_a.tubes_sewa_kos.API.KostAPI;
 
 import java.io.Serializable;
@@ -105,6 +106,8 @@ public class Kos implements Serializable {
     public static void loadImage(ImageView imageView, String imageUrl) {
         Glide.with(imageView)
                 .load(imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(imageView);
     }
 }
