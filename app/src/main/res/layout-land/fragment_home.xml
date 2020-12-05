@@ -18,6 +18,15 @@
             android:layout_margin="42dp"
             android:background="?attr/backgroundColor">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Headline4"
+                android:gravity="center"
+                android:text="@string/daftar_kost"
+                android:textColor="?attr/textColor"
+                android:layout_marginBottom="8dp"/>
+
             <SearchView
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"

@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:layout_marginRight="5dp"
-            android:text="Back"
+            android:text="@string/kembali"
             android:backgroundTint="@color/button_cancel"
             android:layout_weight="0.5"/>
         <Button
@@ -34,9 +34,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:layout_marginLeft="5dp"
-            android:text="Save"
+            android:text="@string/simpan"
             android:backgroundTint="@color/button_ok"
             android:layout_weight="0.5"/>
 
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_location_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top"
+        android:layout_margin="16dp"
+        android:tint="@android:color/white"
+        app:srcCompat="@android:drawable/ic_search_category_default" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

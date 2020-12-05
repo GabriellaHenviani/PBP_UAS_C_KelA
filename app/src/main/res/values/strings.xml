@@ -31,7 +31,7 @@
     <string name="daftar_kost">Daftar Kost</string>
     <string name="tambah_kost">Tambah Kost</string>
     <string name="edit_kost">Edit Kost</string>
-    <string name="nama_kost">Nama</string>
+    <string name="nama_kost">Nama Kost</string>
     <string name="alamat_kost">Alamat</string>
     <string name="tipe_kost">Tipe</string>
     <string name="batal">Batal</string>
@@ -51,4 +51,11 @@
     <string name="tambah_bookmark">Tambah Bookmark</string>
     <string name="hapus">Hapus</string>
     <string name="fab_content_desc">Tambah Kost</string>
+    <string name="galeri">Galeri</string>
+    <string name="kamera">Kamera</string>
+    <string name="pilih_media">Pilih Media</string>
+    <string name="daftar_kost_saya">Daftar Kost Saya</string>
+    <string name="simpan">Simpan</string>
+    <string name="rupiah">Rp</string>
+    <string name="per_bulan">/ bulan</string>
 </resources>

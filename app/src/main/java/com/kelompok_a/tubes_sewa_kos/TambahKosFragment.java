@@ -1,10 +1,14 @@
 package com.kelompok_a.tubes_sewa_kos;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -37,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,13 +56,16 @@ public class TambahKosFragment extends Fragment {
 
     public static final int CAMERA_PERM_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
+    public static final int GALLERY_PERM_CODE = 103;
+    public static final int GALLERY_REQUEST_CODE = 104;
     private FragmentTambahKosBinding binding;
     double lng = 0, lat = 0;
     String encodedImage=""; //string untuk upload image
     private SharedPref sharedPref;
     private ProgressDialog progressDialog;
 
-    private String status;
+    private String status, selected;
+    private static final int PERMISSION_CODE = 1000;
     private Kos kos;
 
     public TambahKosFragment() {
@@ -77,7 +86,40 @@ public class TambahKosFragment extends Fragment {
         progressDialog = new ProgressDialog(view.getContext());
         sharedPref = new SharedPref(getActivity());
 
-        binding.btnCamera.setOnClickListener(new CameraButtonListener());
+        binding.btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater layoutInflater = LayoutInflater.from(view.getContext());
+                View menu = layoutInflater.inflate(R.layout.pilih_media, null);
+
+                final AlertDialog alertD = new AlertDialog.Builder(view.getContext()).create();
+
+                Button btnKamera = (Button) menu.findViewById(R.id.btn_kamera);
+                Button btnGaleri = (Button) menu.findViewById(R.id.btn_galeri);
+
+                btnKamera.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        selected="kamera";
+                        askCameraPermission();
+                        alertD.dismiss();
+                    }
+                });
+
+                btnGaleri.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        selected="galeri";
+                        askGalleryPermission();
+                        alertD.dismiss();
+                    }
+                });
+
+                alertD.setView(menu);
+                alertD.show();
+            }
+        });
+
+
+
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -291,31 +333,39 @@ public class TambahKosFragment extends Fragment {
         binding.tipeKostDropdown.setAdapter(adapter);
     }
 
-    public class CameraButtonListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            askCameraPermission();
-        }
-    }
-
     public void askCameraPermission() {
-        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
+        {
+            if(getActivity().checkSelfPermission(Manifest.permission.CAMERA)==
+                    PackageManager.PERMISSION_DENIED ||
+                    getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==
+                            PackageManager.PERMISSION_DENIED){
+                String[] permission = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permission,PERMISSION_CODE);
+            }
+            else{
+                openCamera();
+            }
         }
-        else {
+        else{
             openCamera();
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == CAMERA_PERM_CODE) {
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openCamera();
+    public void askGalleryPermission() {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
+        {
+            if(getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==
+                    PackageManager.PERMISSION_DENIED){
+                String[] permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permission,PERMISSION_CODE);
             }
-            else {
-                Toast.makeText(getActivity(), "Camera permission is required to use camera", Toast.LENGTH_SHORT).show();
+            else{
+                openGallery();
             }
+        }
+        else{
+            openGallery();
         }
     }
 
@@ -324,11 +374,53 @@ public class TambahKosFragment extends Fragment {
         startActivityForResult(camera, CAMERA_REQUEST_CODE);
     }
 
+    private void openGallery(){
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, GALLERY_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case PERMISSION_CODE:{
+                if(grantResults.length > 0 && grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED){
+                    if(selected.equals("kamera"))
+                        openCamera();
+                    else
+                        openGallery();
+                }else{
+                    Toast.makeText(getContext() ,"Permision denied",Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CAMERA_REQUEST_CODE) {
-            Bitmap image = (Bitmap) data.getExtras().get("data");
+        if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+            if(data != null) {
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                binding.imageView.setImageBitmap(image);
+
+                image = getResizedBitmap(image, 512);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] byteArray = baos.toByteArray();
+                encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            }
+        }
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK)
+        {
+            Uri selectedImage = data.getData();
+            Bitmap image = null;
+            try {
+                InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                image = BitmapFactory.decodeStream(inputStream);
+            } catch (Exception e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
             binding.imageView.setImageBitmap(image);
 
             image = getResizedBitmap(image, 512);
@@ -337,15 +429,9 @@ public class TambahKosFragment extends Fragment {
             byte[] byteArray = baos.toByteArray();
             encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
         }
-        if(requestCode == 77) {
-            if (resultCode == RESULT_OK) {
-                lng = data.getDoubleExtra("lng", 0);
-                lat = data.getDoubleExtra("lat", 0);
-                //ambil result
-            }
-            if (resultCode == RESULT_CANCELED) {
-                //cancelled
-            }
+        if(requestCode == 77 && resultCode == RESULT_OK) {
+            lng = data.getDoubleExtra("lng", 0);
+            lat = data.getDoubleExtra("lat", 0);
         }
     }
 

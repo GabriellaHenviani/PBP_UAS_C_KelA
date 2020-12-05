@@ -5,13 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -19,8 +17,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
-import com.mapbox.api.directions.v5.models.DirectionsResponse;
-import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
@@ -42,16 +38,11 @@ import com.mapbox.mapboxsdk.plugins.places.autocomplete.data.converter.CarmenFea
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
-import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
-import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 import java.util.Collections;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
@@ -68,11 +59,9 @@ public class MapSelectActivity extends AppCompatActivity implements OnMapReadyCa
     private MapboxMap mapboxMap;
     private MapView mapView;
     private Point origin, destination;
-    private NavigationMapRoute navigationMapRoute;
     private static final String TAG = "MapSelectActivity";
     private Button btnBack, btnSave;
-    private DirectionsRoute currentRoute;
-    double lng, lat;
+    private double lng, lat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +77,7 @@ public class MapSelectActivity extends AppCompatActivity implements OnMapReadyCa
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-
+        searchfab = findViewById(R.id.fab_location_search);
         btnBack = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +88,19 @@ public class MapSelectActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
         btnSave.setEnabled(false);
+        searchfab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new PlaceAutocomplete.IntentBuilder()
+                        .accessToken(Mapbox.getAccessToken() != null ? Mapbox.getAccessToken() : getString(R.string.mapbox_access_token))
+                        .placeOptions(PlaceOptions.builder()
+                                .backgroundColor(Color.parseColor("#EEEEEE"))
+                                .limit(10)
+                                .build(PlaceOptions.MODE_CARDS))
+                        .build(MapSelectActivity.this);
+                startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
+            }
+        });
     }
 
     private void initLayers(@NonNull Style loadedMapStyle) {
@@ -171,6 +173,7 @@ public class MapSelectActivity extends AppCompatActivity implements OnMapReadyCa
                     LatLng point = new LatLng(((Point) selectedCarmenFeature.geometry()).latitude(),
                             ((Point) selectedCarmenFeature.geometry()).longitude());
                     destination = Point.fromLngLat(point.getLongitude(), point.getLatitude());
+                    btnSave.setEnabled(true);
                 }
             }
         }
@@ -202,11 +205,11 @@ public class MapSelectActivity extends AppCompatActivity implements OnMapReadyCa
                         mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
                             @Override
                             public boolean onMapClick(@NonNull LatLng point) {
-
                                 symbolLayerIconFeatureList[0] = Feature.fromGeometry(
                                         Point.fromLngLat(point.getLongitude(), point.getLatitude()));
 
                                 destination = Point.fromLngLat(point.getLongitude(), point.getLatitude());
+
                                 GeoJsonSource source = mapboxMap.getStyle().getSourceAs(DESTINATION_SOURCE_ID);
                                 source.setGeoJson(FeatureCollection.fromFeatures(Collections.singletonList(symbolLayerIconFeatureList[0])));
 

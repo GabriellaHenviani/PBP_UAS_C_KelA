@@ -34,6 +34,20 @@
                     android:textColor="?attr/textColor"
                     android:layout_marginBottom="8dp"/>
 
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    app:srcCompat="@drawable/noimage"/>
+
+                <Button
+                    android:id="@+id/btn_upload"
+                    android:text="@string/tambah_foto"
+                    android:backgroundTint="@color/button_ok"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -131,6 +145,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:prefixText="@string/rupiah"
+                    app:suffixText="@string/per_bulan"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/input_harga_kos"
@@ -143,18 +159,6 @@
                         android:textColor="?attr/textColor"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <Button
-                    android:id="@+id/btn_Camera"
-                    android:text="@string/tambah_foto"
-                    android:backgroundTint="@color/button_ok"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"/>
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="220dp"/>
 
                 <LinearLayout
                     android:orientation="horizontal"
