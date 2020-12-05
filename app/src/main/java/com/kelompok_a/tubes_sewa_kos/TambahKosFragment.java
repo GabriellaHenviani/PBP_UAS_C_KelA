@@ -27,6 +27,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kelompok_a.tubes_sewa_kos.API.KostAPI;
 import com.kelompok_a.tubes_sewa_kos.API.UserAPI;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentTambahKosBinding;
@@ -52,6 +54,9 @@ public class TambahKosFragment extends Fragment {
     String encodedImage; //string untuk upload image
     private SharedPref sharedPref;
     private ProgressDialog progressDialog;
+
+    private String status;
+    private Kos kos;
 
     public TambahKosFragment() {
 
@@ -116,6 +121,17 @@ public class TambahKosFragment extends Fragment {
         });
 
         populateDropdown(view);
+
+        status = getArguments().getString("status");
+        if(status.equals("edit")) {
+            kos = (Kos) getArguments().getSerializable("kos");
+            binding.setKos(kos);
+            Glide.with(view.getContext())
+                    .load(KostAPI.URL_IMAGES +kos.getImgURL())
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(binding.imageView);
+        }
         return view;
     }
 
@@ -124,6 +140,8 @@ public class TambahKosFragment extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
         showProgress("Menambahkan Kos...");
+
+
 
         StringRequest stringRequest = new StringRequest(POST, KostAPI.URL_ADD,
                 new Response.Listener<String>() {

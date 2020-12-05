@@ -76,7 +76,11 @@ public class DaftarKosFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadFragment(new TambahKosFragment());
+                TambahKosFragment tambahKosFragment = new TambahKosFragment();
+                Bundle data = new Bundle();
+                data.putString("status", "tambah");
+                tambahKosFragment.setArguments(data);
+                loadFragment(tambahKosFragment);
             }
         });
 

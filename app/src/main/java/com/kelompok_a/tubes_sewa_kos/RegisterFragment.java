@@ -111,6 +111,7 @@ public class RegisterFragment extends Fragment {
     }
 
     //api post untuk register
+    /*
     public void RegisterUser(String nama, String noHp, String email, String password) {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
@@ -132,11 +133,69 @@ public class RegisterFragment extends Fragment {
                                         .commit();
                             }
                             Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                            System.out.println(obj.getString("message"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data, "utf-8");
+                    JSONObject jsonMessage = new JSONObject(responseBody);
+                    String message = jsonMessage.getString("message");
+                    Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                    System.out.println(message);
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                progressDialog.dismiss();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("nama", nama);
+                params.put("noHp", noHp);
+                params.put("email", email);
+                params.put("password", password);
+
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+     */
+
+    private void RegisterUser(String nama, String noHp, String email, String password){
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        showProgress("Memproses register");
+
+        StringRequest stringRequest = new StringRequest(POST, UserAPI.URL_REGISTER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    //Mengubah response string menjadi object
+                    JSONObject obj = new JSONObject(response);
+                    //obj.getString("message") digunakan untuk mengambil pesan message dari response
+                    if(obj.getString("status").equals("Success"))
+                    {
+                        Fragment loginFragment = new LoginFragment();
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_layout, loginFragment)
+                                .commit();
+                    }
+                    Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 try {
@@ -161,7 +220,9 @@ public class RegisterFragment extends Fragment {
                 return params;
             }
         };
-        requestQueue.add(stringRequest);
+
+        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
+        queue.add(stringRequest);
     }
 
     public void showProgress(String title) {
