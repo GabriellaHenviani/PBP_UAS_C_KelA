@@ -84,21 +84,13 @@ public class HomeFragment extends Fragment {
     public class SearchListener implements SearchView.OnQueryTextListener {
         @Override
         public boolean onQueryTextSubmit(String s) {
-            try {
-                adapter.getFilter().filter(s);
-            } catch (Exception e) {
-                System.err.println(e);
-            }
+            adapter.getFilter().filter(s);
             return false;
         }
 
         @Override
         public boolean onQueryTextChange(String s) {
-            try {
-                adapter.getFilter().filter(s);
-            } catch (Exception e) {
-                System.err.println(e);
-            }
+            adapter.getFilter().filter(s);
             return false;
         }
     }

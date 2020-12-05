@@ -14,6 +14,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -44,6 +46,7 @@ public class DaftarKosFragment extends Fragment {
     private ProgressDialog progressDialog;
     private View view;
     private FloatingActionButton add;
+    private SearchView search;
 
     public DaftarKosFragment() {
         // Required empty public constructor
@@ -62,6 +65,7 @@ public class DaftarKosFragment extends Fragment {
         sharedPref = new SharedPref(getActivity());
 
         add = view.findViewById(R.id.fab_add);
+        search = view.findViewById(R.id.search_view);
 
         progressDialog = new ProgressDialog(view.getContext());
         listKos = new ArrayList<Kos>();
@@ -81,6 +85,20 @@ public class DaftarKosFragment extends Fragment {
                 data.putString("status", "tambah");
                 tambahKosFragment.setArguments(data);
                 loadFragment(tambahKosFragment);
+            }
+        });
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                adapter.getFilter().filter(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                adapter.getFilter().filter(s);
+                return false;
             }
         });
 
