@@ -43,6 +43,8 @@ public class HomeFragment extends Fragment {
     private SharedPref sharedPref;
     private ProgressDialog progressDialog;
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
