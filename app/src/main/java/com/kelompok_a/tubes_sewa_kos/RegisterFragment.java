@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -190,6 +191,7 @@ public class RegisterFragment extends Fragment {
                                 .commit();
                     }
                     Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Cek email anda untuk melakukan verifikasi", Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -222,6 +224,10 @@ public class RegisterFragment extends Fragment {
         };
 
         //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
 
