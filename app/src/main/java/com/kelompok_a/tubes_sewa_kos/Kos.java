@@ -70,6 +70,9 @@ public class Kos implements Serializable {
         String hargaString = "Rp " + harga + " / bulan";
         return hargaString;
     }
+    public String getHargaOnlyNumber() {
+        return String.valueOf(harga);
+    }
 
     public void setHarga(int harga) { this.harga = harga; }
 

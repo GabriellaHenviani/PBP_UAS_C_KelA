@@ -138,7 +138,7 @@
                         android:layout_height="match_parent"
                         android:autofillHints=""
                         android:hint="@string/harga_kost"
-                        android:text="@{kos.harga}"
+                        android:text="@{kos.hargaOnlyNumber}"
                         android:inputType="number"
                         android:textColor="?attr/textColor"/>
                 </com.google.android.material.textfield.TextInputLayout>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -76,9 +77,28 @@ public class InfoKosFragment extends Fragment {
             }
         });
 
-        if(kos.getIdUser() != sharedPref.getIdUser()) {
+        binding.editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                Bundle data = new Bundle();
+                data.putSerializable("kos", kos);
+                data.putString("status", "edit");
+                TambahKosFragment tambahKosFragment = new TambahKosFragment();
+                tambahKosFragment.setArguments(data);
+                activity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_layout, tambahKosFragment)
+                        .commit();
+            }
+        });
+
+        if (kos.getIdUser() != sharedPref.getIdUser()) {
             binding.editBtn.setVisibility(View.GONE);
             binding.hapusBtn.setVisibility(View.GONE);
+        } else {
+            binding.editBtn.setVisibility(View.VISIBLE);
+            binding.hapusBtn.setVisibility(View.VISIBLE);
         }
 
         return view;

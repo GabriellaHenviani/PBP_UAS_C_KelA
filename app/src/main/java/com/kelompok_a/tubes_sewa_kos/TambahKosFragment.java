@@ -44,6 +44,7 @@ import java.util.Map;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.android.volley.Request.Method.POST;
+import static com.android.volley.Request.Method.PUT;
 
 public class TambahKosFragment extends Fragment {
 
@@ -51,7 +52,7 @@ public class TambahKosFragment extends Fragment {
     public static final int CAMERA_REQUEST_CODE = 102;
     private FragmentTambahKosBinding binding;
     double lng = 0, lat = 0;
-    String encodedImage; //string untuk upload image
+    String encodedImage=""; //string untuk upload image
     private SharedPref sharedPref;
     private ProgressDialog progressDialog;
 
@@ -91,8 +92,8 @@ public class TambahKosFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MapSelectActivity.class);
-                intent.putExtra("lng", 0);
-                intent.putExtra("lat", 0);
+                intent.putExtra("lng", lng);
+                intent.putExtra("lat", lat);
                 startActivityForResult(intent, 77);
             }
         });
@@ -101,9 +102,15 @@ public class TambahKosFragment extends Fragment {
             public void onClick(View view) {
                 //add
                 if (validateTambahKos()){
-                    tambahKos(binding.inputNamaKos.getText().toString(), binding.tipeKostDropdown.getText().toString(),
-                            binding.inputAlamatKos.getText().toString(), binding.inputHargaKos.getText().toString(),
-                            lng, lat);
+                    if (status.equals("edit")){
+                        editKos(binding.inputNamaKos.getText().toString(), binding.tipeKostDropdown.getText().toString(),
+                                binding.inputAlamatKos.getText().toString(), binding.inputHargaKos.getText().toString(),
+                                lng, lat);
+                    } else {
+                        tambahKos(binding.inputNamaKos.getText().toString(), binding.tipeKostDropdown.getText().toString(),
+                                binding.inputAlamatKos.getText().toString(), binding.inputHargaKos.getText().toString(),
+                                lng, lat);
+                    }
                 }
             }
 
@@ -127,8 +134,11 @@ public class TambahKosFragment extends Fragment {
             binding.judulFragment.setText(R.string.edit_kost);
             kos = (Kos) getArguments().getSerializable("kos");
             binding.setKos(kos);
+            binding.btnAdd.setText("Save"); //Line 129
+            lng = kos.getLongitude();
+            lat = kos.getLatitude();
             Glide.with(view.getContext())
-                    .load(KostAPI.URL_IMAGES +kos.getImgURL())
+                    .load(kos.getImgURL())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(binding.imageView);
@@ -136,20 +146,81 @@ public class TambahKosFragment extends Fragment {
         return view;
     }
 
-    //TODO masih minus gambar
+    private void editKos(String nama, String tipe, String alamat, String harga, double lng, double lat) { //Line 137
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        showProgress("Mengedit Kos...");
+
+        StringRequest stringRequest = new StringRequest(PUT, KostAPI.URL_UPDATE + String.valueOf(kos.getId()),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if(obj.getString("status").equals("Success")) {
+                                //pindah ke fragment login/home / suruh verif
+                                Fragment daftarKosFragment = new DaftarKosFragment();
+                                getActivity().getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment_layout, daftarKosFragment)
+                                        .commit();
+                            }
+                            Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data, "utf-8");
+                    System.out.println(responseBody);
+                    JSONObject jsonMessage = new JSONObject(responseBody);
+                    String message = jsonMessage.getString("message");
+                    Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                progressDialog.dismiss();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + sharedPref.getToken());
+                return params;
+            }
+            @Override
+            public Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("nama", nama);
+                params.put("tipe", tipe);
+                params.put("alamat", alamat);
+                params.put("harga", harga);
+                if (encodedImage != "")
+                    params.put("foto", encodedImage); //ubah ke bentuk jpeg
+                else
+                    params.put("foto", "");
+                params.put("longitude", String.valueOf(lng));
+                params.put("latitude", String.valueOf(lat));
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
     public void tambahKos(String nama, String tipe, String alamat, String harga, double lng, double lat) {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
         showProgress("Menambahkan Kos...");
-
-
 
         StringRequest stringRequest = new StringRequest(POST, KostAPI.URL_ADD,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            System.out.println(response);
                             JSONObject obj = new JSONObject(response);
                             if(obj.getString("status").equals("Success")) {
                                 //pindah ke fragment login/home / suruh verif
@@ -182,7 +253,6 @@ public class TambahKosFragment extends Fragment {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<String, String>();
-                //TODO nambahin token
                 params.put("Authorization", "Bearer " + sharedPref.getToken());
                 return params;
             }

@@ -188,6 +188,16 @@ public class MapSelectActivity extends AppCompatActivity implements OnMapReadyCa
                         enableLocationComponent(style);
 
                         initLayers(style);
+                        if (lng != 0 || lat != 0) {
+                            mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                                    new CameraPosition.Builder()
+                                            .target(new LatLng(lat, lng))
+                                            .zoom(11)
+                                            .build()), 4000);
+                            //naro tag di posisi longi latit
+                            GeoJsonSource source = mapboxMap.getStyle().getSourceAs(DESTINATION_SOURCE_ID);
+                            source.setGeoJson(FeatureCollection.fromFeature(Feature.fromGeometry(Point.fromLngLat(lng, lat))));
+                        }
 
                         mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
                             @Override
