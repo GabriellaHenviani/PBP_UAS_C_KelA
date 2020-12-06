@@ -37,7 +37,6 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private SharedPref sharedPref;
     private View view;
-    private Button editBtn;
     private User user;
 
     private ProgressDialog progressDialog;
@@ -56,12 +55,10 @@ public class ProfileFragment extends Fragment {
 
         progressDialog = new ProgressDialog(view.getContext());
 
-        editBtn = view.findViewById(R.id.btn_update);
-
         getUser();
 
         binding.btnLogout.setOnClickListener(new ButtonListener());
-        editBtn.setOnClickListener(new View.OnClickListener() {
+        binding.btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle data = new Bundle();
@@ -99,13 +96,15 @@ public class ProfileFragment extends Fragment {
                 String noHp;
                 //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
                 try {
-                    JSONObject dataUser = response.getJSONObject("data");
+                    if(response.optString("status").equalsIgnoreCase("Success")) {
+                        JSONObject dataUser = response.getJSONObject("data");
 
-                    nama = dataUser.optString("nama");
-                    email = dataUser.optString("email");
-                    noHp = dataUser.optString("noHp");
+                        nama = dataUser.optString("nama");
+                        email = dataUser.optString("email");
+                        noHp = dataUser.optString("noHp");
 
-                    user = new User(nama, noHp, email);
+                        user = new User(nama, noHp, email);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -4,6 +4,7 @@
         <variable
             name="homeFragment"
             type="com.kelompok_a.tubes_sewa_kos.HomeFragment" />
+
     </data>
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"

@@ -40,13 +40,9 @@ import static com.android.volley.Request.Method.GET;
 public class DaftarKosFragment extends Fragment {
 
     private ArrayList<Kos> listKos;
-    private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private SharedPref sharedPref;
     private ProgressDialog progressDialog;
-    private View view;
-    private FloatingActionButton add;
-    private SearchView search;
 
     public DaftarKosFragment() {
         // Required empty public constructor
@@ -61,22 +57,10 @@ public class DaftarKosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_daftar_kos, container, false);
+        View view = inflater.inflate(R.layout.fragment_daftar_kos, container, false);
         sharedPref = new SharedPref(getActivity());
 
-        add = view.findViewById(R.id.fab_add);
-        search = view.findViewById(R.id.search_view);
-
-        progressDialog = new ProgressDialog(view.getContext());
-        listKos = new ArrayList<Kos>();
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new RecyclerViewAdapter(getActivity(), listKos);
-        recyclerView.setAdapter(adapter);
-
+        FloatingActionButton add = view.findViewById(R.id.fab_add);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +72,7 @@ public class DaftarKosFragment extends Fragment {
             }
         });
 
+        SearchView search = view.findViewById(R.id.search_view);
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -101,6 +86,16 @@ public class DaftarKosFragment extends Fragment {
                 return false;
             }
         });
+
+        progressDialog = new ProgressDialog(view.getContext());
+        listKos = new ArrayList<Kos>();
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new RecyclerViewAdapter(getActivity(), listKos);
+        recyclerView.setAdapter(adapter);
 
         getDaftarKos();
         return view;
@@ -132,6 +127,7 @@ public class DaftarKosFragment extends Fragment {
                         //Mengubah data jsonArray tertentu menjadi json Object
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
 
+                        int id = jsonObject.optInt("id");
                         String nama = jsonObject.optString("nama");
                         String tipe = jsonObject.optString("tipe");
                         String alamat = jsonObject.optString("alamat");
@@ -142,7 +138,7 @@ public class DaftarKosFragment extends Fragment {
                         int idUser = jsonObject.optInt("idUser");
 
                         //Membuat objek buku
-                        Kos kos = new Kos(nama, tipe, alamat, harga, foto, longitude, latitude, idUser);
+                        Kos kos = new Kos(id, nama, tipe, alamat, harga, foto, longitude, latitude, idUser);
 
                         //Menambahkan objek user tadi ke list user
                         listKos.add(kos);

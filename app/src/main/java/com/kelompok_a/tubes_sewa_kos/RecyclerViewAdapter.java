@@ -105,6 +105,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             activity.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_layout, infoKosFragment)
+                    .addToBackStack(null)
                     .commit();
         }
     }

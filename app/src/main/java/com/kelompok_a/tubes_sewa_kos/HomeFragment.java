@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
         binding.swipeRefresh.setOnRefreshListener(new RefreshListener());
         binding.searchView.setOnQueryTextListener(new SearchListener());
 
-        getUser();
+        getKos();
 
         return view;
     }
@@ -95,7 +95,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void getUser() {
+    public void getKos() {
         //Pendeklarasian queue
         RequestQueue queue = Volley.newRequestQueue(getContext());
 

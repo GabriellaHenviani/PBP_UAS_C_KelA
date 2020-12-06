@@ -78,7 +78,7 @@
                         android:layout_marginTop="24dp"
                         android:layout_marginBottom="24dp"
                         android:text="@string/edit"
-                        android:backgroundTint="@color/button_ok"/>
+                        android:backgroundTint="?attr/buttonColor"/>
                 </LinearLayout>
 
                 <Button
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="@string/bookmark_saya"
-                    android:backgroundTint="@color/button_ok"/>
+                    android:backgroundTint="?attr/buttonColor"/>
 
                 <Button
                     android:id="@+id/btn_logout"
@@ -96,7 +96,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="24dp"
                     android:text="@string/logout"
-                    android:backgroundTint="@color/button_cancel"/>
+                    android:backgroundTint="?attr/buttonCancelColor"/>
             </LinearLayout>
         </FrameLayout>
     </ScrollView>

@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#fff"
                     android:text="@string/kembali"
-                    android:backgroundTint="@color/button_ok"/>
+                    android:backgroundTint="?attr/buttonColor"/>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

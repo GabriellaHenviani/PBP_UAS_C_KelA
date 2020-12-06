@@ -28,7 +28,7 @@
                 <ImageView
                     android:id="@+id/profile_img"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="350dp"
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/imageContentDesc"
                     bind:imgURL="@{kos.imgURL}" />
@@ -113,6 +113,20 @@
                         android:text="@{kos.harga}"
                         android:textColor="?attr/textColor"/>
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/hubungi_pemilik"
+                    android:textColor="?attr/textColor"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/text_nama_noHp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/textColor"/>
 
                 <Button
                     android:id="@+id/map_btn"

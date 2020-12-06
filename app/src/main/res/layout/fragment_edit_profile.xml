@@ -115,7 +115,7 @@
                         android:text="@string/batal"
                         android:layout_weight="0.5"
                         android:layout_marginEnd="10dp"
-                        android:backgroundTint="@color/button_cancel"
+                        android:backgroundTint="?attr/buttonCancelColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -123,7 +123,7 @@
                         android:id="@+id/btn_edit"
                         android:text="@string/edit"
                         android:layout_weight="0.5"
-                        android:backgroundTint="@color/button_ok"
+                        android:backgroundTint="?attr/buttonColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
