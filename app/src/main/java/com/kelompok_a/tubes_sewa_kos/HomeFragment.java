@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
         binding.swipeRefresh.setOnRefreshListener(new RefreshListener());
         binding.searchView.setOnQueryTextListener(new SearchListener());
 
-        getKos();
+        getUser();
 
         return view;
     }
@@ -86,18 +86,26 @@ public class HomeFragment extends Fragment {
     public class SearchListener implements SearchView.OnQueryTextListener {
         @Override
         public boolean onQueryTextSubmit(String s) {
-            adapter.getFilter().filter(s);
+            try {
+                adapter.getFilter().filter(s);
+            } catch (Exception e) {
+                System.err.println(e);
+            }
             return false;
         }
 
         @Override
         public boolean onQueryTextChange(String s) {
-            adapter.getFilter().filter(s);
+            try {
+                adapter.getFilter().filter(s);
+            } catch (Exception e) {
+                System.err.println(e);
+            }
             return false;
         }
     }
 
-    public void getKos() {
+    public void getUser() {
         //Pendeklarasian queue
         RequestQueue queue = Volley.newRequestQueue(getContext());
 

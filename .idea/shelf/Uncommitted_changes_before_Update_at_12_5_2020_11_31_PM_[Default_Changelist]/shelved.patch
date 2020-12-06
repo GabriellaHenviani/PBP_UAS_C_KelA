@@ -1,0 +1,28 @@
+Index: app/src/main/res/layout/fragment_bookmark.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_bookmark.xml	(date 1607184616904)
++++ app/src/main/res/layout/fragment_bookmark.xml	(date 1607184616904)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.constraintlayout.widget.ConstraintLayout
++    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/kelompok_a/tubes_sewa_kos/BookmarkList.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/kelompok_a/tubes_sewa_kos/BookmarkList.java	(date 1607184397073)
++++ app/src/main/java/com/kelompok_a/tubes_sewa_kos/BookmarkList.java	(date 1607184397073)
+@@ -0,0 +1,4 @@
++package com.kelompok_a.tubes_sewa_kos;
++
++public class BookmarkList {
++}
+diff --git .idea/shelf/Uncommitted_changes_before_Update_at_01_12_2020_14_46__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_01_12_2020_14_46__Default_Changelist_.xml
