@@ -8,10 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="backgroundColor">#fcfcfc</item>
         <item name="cardBackground">#ffffff</item>
-        <item name="textColor">#808080</item>
+        <item name="textColor">#202020</item>
         <item name="tintColor">#000000</item>
         <item name="buttonColor">@color/button_ok</item>
         <item name="buttonCancelColor">@color/button_cancel</item>
+        <item name="linkColor">@color/link</item>
     </style>
 
     <!-- Theme Dark -->
@@ -26,6 +27,7 @@
         <item name="tintColor">#ffffff</item>
         <item name="buttonColor">@color/button_ok_dark</item>
         <item name="buttonCancelColor">@color/button_cancel_dark</item>
+        <item name="linkColor">@color/linkDark</item>
     </style>
     <style name="SplashScreenStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/logo</item>

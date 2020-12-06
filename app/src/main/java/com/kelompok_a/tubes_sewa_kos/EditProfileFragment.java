@@ -52,7 +52,7 @@ public class EditProfileFragment extends Fragment implements EditProfileView{
         batal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadFragment(new ProfileFragment());
+                getFragmentManager().popBackStack();
             }
         });
 
@@ -70,20 +70,6 @@ public class EditProfileFragment extends Fragment implements EditProfileView{
         etNama.setText(user.getNama());
         etNoHp.setText(user.getNoHp());
         etEmail.setText(user.getEmail());
-    }
-
-
-    public void loadFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (Build.VERSION.SDK_INT >= 26) {
-            fragmentTransaction.setReorderingAllowed(false);
-        }
-
-        fragmentTransaction.replace(R.id.fragment_layout, fragment)
-                .detach(this)
-                .attach(this)
-                .commit();
     }
 
     @Override

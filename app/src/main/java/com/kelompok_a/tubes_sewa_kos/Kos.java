@@ -19,17 +19,6 @@ public class Kos implements Serializable {
     private double longitude, latitude;
     private int idUser;
 
-    public Kos(String nama, String tipe, String alamat, int harga, String imgURL, double longitude, double latitude, int idUser) {
-        this.nama = nama;
-        this.tipe = tipe;
-        this.alamat = alamat;
-        this.harga = harga;
-        this.imgURL = imgURL;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.idUser = idUser;
-    }
-
     public Kos(int id, String nama, String tipe, String alamat, int harga, String imgURL, Double longitude, Double latitude, int idUser) {
         this.id = id;
         this.nama = nama;

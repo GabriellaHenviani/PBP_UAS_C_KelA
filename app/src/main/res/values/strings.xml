@@ -42,7 +42,8 @@
     <string name="imageContentDesc">Image</string>
     <string name="kembali">Kembali</string>
     <string name="night_mode">Night mode</string>
-    <string name="lihat_di_peta">Lihat di Peta</string>
+    <string name="lihat_di_peta">Lihat pada Peta</string>
+    <string name="tandai_di_peta">Tandai pada peta</string>
     <string name="nama">Nama</string>
     <string name="profile_saya">Profil Saya</string>
     <string name="bookmark_saya">Bookmark Saya</string>
@@ -58,4 +59,5 @@
     <string name="simpan">Simpan</string>
     <string name="rupiah">Rp</string>
     <string name="per_bulan">/ bulan</string>
+    <string name="hubungi_pemilik">Hubungi pemilik kost ini</string>
 </resources>

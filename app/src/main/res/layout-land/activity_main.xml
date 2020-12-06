@@ -30,7 +30,7 @@
             app:itemIconTint="@android:color/white"
             app:itemTextColor="@android:color/white"
             app:labelVisibilityMode="labeled"
-            android:background="?attr/buttonColor"/>
+            android:background="?attr/colorPrimary"/>
     </RelativeLayout>
 
 </layout>

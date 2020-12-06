@@ -6,10 +6,11 @@
     <color name="colorOnPrimary">#FFFFFF</color>
 
     <color name="link">#165f8c</color>
-    <color name="button_ok">#2e7fa3</color>
-    <color name="button_cancel">#8294BD</color>
-    <color name="button_ok_dark">#3899C3</color>
-    <color name="button_cancel_dark">#8396C3</color>
+    <color name="linkDark">#32ACF8</color>
+    <color name="button_ok">#2E90BC</color>
+    <color name="button_cancel">#508CA6</color>
+    <color name="button_ok_dark">#226988</color>
+    <color name="button_cancel_dark">#386477</color>
     <color name="button_delete">#B53B3B</color>
 
     <!-- Screens background color-->

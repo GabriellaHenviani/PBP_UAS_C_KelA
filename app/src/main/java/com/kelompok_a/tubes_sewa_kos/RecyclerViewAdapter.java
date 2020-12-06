@@ -19,15 +19,14 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements Filterable {
     private Context context;
-    private List<Kos> result, resultAll;
+    private List<Kos> dataList, filteredDataList;
 
     public RecyclerViewAdapter(){}
 
-    public RecyclerViewAdapter(Context context, List<Kos> result){
+    public RecyclerViewAdapter(Context context, List<Kos> dataList){
         this.context = context;
-        this.result = result;
-        resultAll = new ArrayList<>(result);
-        notifyDataSetChanged();
+        this.dataList = dataList;
+        this.filteredDataList = dataList;
     }
 
     @NonNull
@@ -41,51 +40,44 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        Kos kos = result.get(position);
+        Kos kos = filteredDataList.get(position);
         holder.bind(kos);
     }
 
     @Override
     public int getItemCount() {
-        return result.size();
+        return filteredDataList.size();
     }
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
+        return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-                List<Kos> filteredList = new ArrayList<>();
-
-                if (charSequence == null || charSequence.length() == 0) {
-                    filteredList.addAll(resultAll);
-                } else {
-                    String filterPattern = charSequence.toString().toLowerCase().trim();
-
-                    for (Kos item : resultAll) {
-                        if (item.getNama().toLowerCase().contains(filterPattern))
-                            filteredList.add(item);
-                        else if (item.getTipe().toLowerCase().contains(filterPattern))
-                            filteredList.add(item);
-                        else if (item.getAlamat().toLowerCase().contains(filterPattern))
-                            filteredList.add(item);
-                        else if (String.valueOf(item.getHarga()).contains(filterPattern))
-                            filteredList.add(item);
+                String charSequenceString = charSequence.toString();
+                if(charSequenceString.isEmpty()) {
+                    filteredDataList = dataList;
+                }
+                else {
+                    List<Kos> filteredList = new ArrayList<>();
+                    for (Kos kos : dataList) {
+                        if(kos.getNama().toLowerCase().contains(charSequenceString.toLowerCase())) {
+                            filteredList.add(kos);
+                        }
+                        filteredDataList = filteredList;
                     }
                 }
-                FilterResults results = new FilterResults();
-                results.values = filteredList;
-                return results;
+                FilterResults dataLists = new FilterResults();
+                dataLists.values = filteredDataList;
+                return dataLists;
             }
 
             @Override
-            protected void publishResults(CharSequence charSequence, FilterResults results) {
-                result.clear();
-                result.addAll((List) results.values);
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                filteredDataList = (List<Kos>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
-        return filter;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -105,7 +97,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public void onClick(View view) {
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
-            Kos kos = result.get(getAdapterPosition());
+            Kos kos = filteredDataList.get(getAdapterPosition());
             Bundle data = new Bundle();
             data.putSerializable("kos", kos);
             InfoKosFragment infoKosFragment = new InfoKosFragment();
@@ -113,6 +105,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             activity.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_layout, infoKosFragment)
+                    .addToBackStack(null)
                     .commit();
         }
     }

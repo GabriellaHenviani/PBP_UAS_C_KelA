@@ -8,4 +8,5 @@ public class UserAPI {
     public static final String URL_REGISTER = ROOT_API+"register";
     public static final String URL_UPDATE = ROOT_API+"user";
     public static final String URL_LOGOUT = ROOT_API+"logout";
+    public static final String URL_OWNER = ROOT_API+"kostOwner/";
 }

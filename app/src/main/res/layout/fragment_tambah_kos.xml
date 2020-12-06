@@ -43,7 +43,7 @@
                 <Button
                     android:id="@+id/btn_upload"
                     android:text="@string/tambah_foto"
-                    android:backgroundTint="@color/button_ok"
+                    android:backgroundTint="?attr/buttonColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5dp"/>
@@ -94,7 +94,6 @@
                         android:layout_height="match_parent"
                         android:hint="@string/tipe_kost"
                         android:inputType="none"
-                        android:text="@{kos.tipe}"
                         android:textColor="?attr/textColor"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -125,8 +124,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
                 <Button
                     android:id="@+id/btn_Map"
-                    android:text="@string/lihat_di_peta"
-                    android:backgroundTint="@color/button_ok"
+                    android:text="@string/tandai_di_peta"
+                    android:backgroundTint="?attr/buttonColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5dp"/>
@@ -171,7 +170,7 @@
                         android:text="@string/batal"
                         android:layout_weight="0.5"
                         android:layout_marginEnd="10dp"
-                        android:backgroundTint="@color/button_cancel"
+                        android:backgroundTint="?attr/buttonCancelColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -179,7 +178,7 @@
                         android:id="@+id/btn_add"
                         android:text="@string/tambah"
                         android:layout_weight="0.5"
-                        android:backgroundTint="@color/button_ok"
+                        android:backgroundTint="?attr/buttonColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>

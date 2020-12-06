@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:context=".LoginFragment"
             android:background="?attr/backgroundColor">
 
@@ -33,9 +33,9 @@
 
                 <!-- Email Label -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
                     <com.google.android.material.textfield.TextInputEditText
@@ -57,9 +57,9 @@
 
                 <!-- Password Label -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
                     <com.google.android.material.textfield.TextInputEditText
@@ -78,17 +78,17 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="24dp"
                     android:text="@string/login"
-                    android:backgroundTint="@color/button_ok"/>
+                    android:backgroundTint="?attr/buttonColor"/>
 
-                <TextView
-                    android:id="@+id/link_signup"
+                <TextView android:id="@+id/link_signup"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/belum_ada_account"
                     android:gravity="center"
-                    android:textColor="@color/link"/>
+                    android:textColor="?attr/linkColor"/>
 
             </LinearLayout>
+
         </FrameLayout>
     </ScrollView>
 </layout>

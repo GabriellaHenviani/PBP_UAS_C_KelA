@@ -78,14 +78,14 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
                 android:text="@string/login"
-                android:backgroundTint="@color/button_ok"/>
+                android:backgroundTint="?attr/buttonColor"/>
 
             <TextView android:id="@+id/link_signup"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/belum_ada_account"
                 android:gravity="center"
-                android:textColor="@color/link"/>
+                android:textColor="?attr/linkColor"/>
 
         </LinearLayout>
 
