@@ -133,13 +133,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:backgroundTint="@color/button_ok"
+                    android:backgroundTint="?attr/buttonColor"
                     android:text="@string/lihat_di_peta"/>
                 <Button
                     android:id="@+id/btn_bookmark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/button_ok"
+                    android:backgroundTint="?attr/buttonColor"
                     android:text="@string/tambah_bookmark"/>
 
                 <LinearLayout
@@ -163,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:layout_marginStart="5dp"
-                        android:backgroundTint="@color/button_ok"
+                        android:backgroundTint="?attr/buttonColor"
                         android:text="@string/edit"/>
                 </LinearLayout>
 
@@ -172,7 +172,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:backgroundTint="@color/button_cancel"
+                    android:backgroundTint="?attr/buttonCancelColor"
                     android:text="@string/kembali"/>
             </LinearLayout>
         </FrameLayout>

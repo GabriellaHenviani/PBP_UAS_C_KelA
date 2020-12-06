@@ -123,6 +123,7 @@ public class InfoKosFragment extends Fragment {
                 activity.getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_layout, tambahKosFragment)
+                        .addToBackStack(null)
                         .commit();
             }
         });
@@ -165,7 +166,7 @@ public class InfoKosFragment extends Fragment {
     public void deleteKos() {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        showProgress("Menghapus Kos...");
+        showProgress("Menghapus Kost");
 
         StringRequest stringRequest = new StringRequest(DELETE, KostAPI.URL_DELETE + kos.getId(),
                 new Response.Listener<String>() {
@@ -215,7 +216,7 @@ public class InfoKosFragment extends Fragment {
         //Pendeklarasian queue
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
-        showProgress("Menampilkan profil");
+        showProgress("Menampilkan data kost");
 
         //Meminta tanggapan string dari URL yang telah disediakan menggunakan method GET
         //untuk request ini tidak memerlukan parameter

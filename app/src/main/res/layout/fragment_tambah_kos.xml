@@ -124,7 +124,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
                 <Button
                     android:id="@+id/btn_Map"
-                    android:text="@string/lihat_di_peta"
+                    android:text="@string/tandai_di_peta"
                     android:backgroundTint="?attr/buttonColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

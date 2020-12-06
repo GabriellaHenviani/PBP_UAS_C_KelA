@@ -192,8 +192,7 @@ public class ProfileFragment extends Fragment {
         }
 
         fragmentTransaction.replace(R.id.fragment_layout, fragment)
-                .detach(this)
-                .attach(this)
+                .addToBackStack(null)
                 .commit();
     }
 

@@ -127,10 +127,7 @@ public class TambahKosFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Fragment homeFragment = new HomeFragment();
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_layout, homeFragment)
-                        .commit();
+                getFragmentManager().popBackStack();
             }
         });
         binding.btnMap.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +142,6 @@ public class TambahKosFragment extends Fragment {
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //add
                 if (validateTambahKos()){
                     if (status.equals("edit")){
                         editKos(binding.inputNamaKos.getText().toString(), binding.tipeKostDropdown.getText().toString(),
@@ -160,14 +156,29 @@ public class TambahKosFragment extends Fragment {
             }
 
             public boolean validateTambahKos() {
-                if (binding.inputNamaKos.getText().toString().equals(""))
+                if (binding.inputNamaKos.getText().toString().equals("") || selectedTipeKost.equals("") ||
+                        binding.inputAlamatKos.getText().toString().equals("") || binding.inputHargaKos.getText().toString().equals("")) {
+                    if(lat == 0 || lng == 0) {
+                        Toast.makeText(getContext(), "Alamat kost belum ditandai pada peta", Toast.LENGTH_LONG).show();
+                    }
+                    if(!status.equalsIgnoreCase("edit") && encodedImage.equals("")) {
+                        Toast.makeText(getContext(), "Foto tidak boleh kosong", Toast.LENGTH_SHORT).show();
+                    }
+                    if(binding.inputNamaKos.getText().toString().equals("")) {
+                        binding.inputNamaKos.setError("Nama kost tidak boleh kosong");
+                    }
+                    if(selectedTipeKost.equals("")) {
+                        binding.tipeKostDropdown.setError("Tipe kost tidak boleh kosong");
+                    }
+                    if(binding.inputAlamatKos.getText().toString().equals("")) {
+                        binding.inputAlamatKos.setError("Alamat kost tidak boleh kosong");
+                    }
+                    if(binding.inputHargaKos.getText().toString().equals("")) {
+                        binding.inputHargaKos.setError("Harga kost tidak boleh kosong");
+                    }
+                    
                     return false;
-                if (binding.tipeKostDropdown.getText().toString().equals(""))
-                    return false;
-                if (binding.inputAlamatKos.getText().toString().equals(""))
-                    return false;
-                if (binding.inputHargaKos.getText().toString().equals(""))
-                    return false;
+                }
                 return true;
             };
         });
@@ -176,9 +187,10 @@ public class TambahKosFragment extends Fragment {
         if(status.equals("edit")) {
             showProgress("Menampilkan data kost");
             binding.judulFragment.setText(R.string.edit_kost);
+            binding.btnAdd.setText(R.string.edit);
+
             kos = (Kos) getArguments().getSerializable("kos");
             binding.setKos(kos);
-            binding.btnAdd.setText(R.string.edit); //Line 129
 
             selectedTipeKost = kos.getTipe();
             binding.tipeKostDropdown.setText(selectedTipeKost, false);
@@ -210,10 +222,7 @@ public class TambahKosFragment extends Fragment {
                             if(obj.getString("status").equals("Success")) {
                                 //pindah ke fragment login/home / suruh verif
                                 Fragment daftarKosFragment = new DaftarKosFragment();
-                                getActivity().getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.fragment_layout, daftarKosFragment)
-                                        .commit();
+                                getActivity().getSupportFragmentManager().popBackStack();
                             }
                             Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
                         } catch (JSONException e) {
@@ -249,7 +258,7 @@ public class TambahKosFragment extends Fragment {
                 params.put("tipe", tipe);
                 params.put("alamat", alamat);
                 params.put("harga", harga);
-                if (encodedImage != "")
+                if (!encodedImage.equals(""))
                     params.put("foto", encodedImage); //ubah ke bentuk jpeg
                 else
                     params.put("foto", "");
@@ -275,10 +284,7 @@ public class TambahKosFragment extends Fragment {
                             if(obj.getString("status").equals("Success")) {
                                 //pindah ke fragment login/home / suruh verif
                                 Fragment daftarKosFragment = new DaftarKosFragment();
-                                getActivity().getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.fragment_layout, daftarKosFragment)
-                                        .commit();
+                                getActivity().getSupportFragmentManager().popBackStack();
                             }
                             Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {

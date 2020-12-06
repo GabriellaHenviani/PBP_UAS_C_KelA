@@ -195,6 +195,7 @@ public class DaftarKosFragment extends Fragment {
         }
 
         fragmentTransaction.replace(R.id.fragment_layout, fragment)
+                .addToBackStack(null)
                 .commit();
     }
 }
