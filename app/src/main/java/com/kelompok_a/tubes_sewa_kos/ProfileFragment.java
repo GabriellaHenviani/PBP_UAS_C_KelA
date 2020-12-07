@@ -27,6 +27,7 @@ import com.kelompok_a.tubes_sewa_kos.databinding.FragmentProfileBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,6 +67,13 @@ public class ProfileFragment extends Fragment {
                 EditProfileFragment editProfileFragment = new EditProfileFragment();
                 editProfileFragment.setArguments(data);
                 loadFragment(editProfileFragment);
+            }
+        });
+
+        binding.btnBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadFragment(new DaftarBookmarkFragment());
             }
         });
         return view;
@@ -119,9 +127,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Disini bagian jika response jaringan terdapat ganguan/error
-                Toast.makeText(view.getContext(), error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
+                try {
+                    String responseBody = new String(error.networkResponse.data, "utf-8");
+                    JSONObject jsonMessage = new JSONObject(responseBody);
+                    String message = jsonMessage.getString("message");
+                    Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         }) {
             @Override
@@ -157,7 +170,10 @@ public class ProfileFragment extends Fragment {
                         sharedPref.setIdUser(-1);
                         MainActivity.isLogin = false;
                         MainActivity.changeMenu(MainActivity.binding.bottomNavigation);
-                        loadFragment(new HomeFragment());
+                        getFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_layout, new HomeFragment())
+                                .commit();
                     }
                     //obj.getString("message") digunakan untuk mengambil pesan message dari response
                     Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
@@ -170,7 +186,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Disini bagian jika response jaringan terdapat ganguan/error
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                try {
+                    String responseBody = new String(error.networkResponse.data, "utf-8");
+                    JSONObject jsonMessage = new JSONObject(responseBody);
+                    String message = jsonMessage.getString("message");
+                    Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         }){
             @Override

@@ -58,6 +58,6 @@ public class SharedPref {
     }
 
     public int getIdUser() {
-        return sharedPreferences.getInt("idUser", 0);
+        return sharedPreferences.getInt("idUser", -1);
     }
 }

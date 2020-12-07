@@ -57,8 +57,11 @@ public class DaftarKosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_daftar_kos, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         sharedPref = new SharedPref(getActivity());
+
+        TextView judul = view.findViewById(R.id.judulFragment);
+        judul.setText(R.string.daftar_kost_saya);
 
         FloatingActionButton add = view.findViewById(R.id.fab_add);
         add.setOnClickListener(new View.OnClickListener() {
@@ -71,18 +74,36 @@ public class DaftarKosFragment extends Fragment {
                 loadFragment(tambahKosFragment);
             }
         });
+        add.setVisibility(View.VISIBLE);
+
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDaftarKos();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         SearchView search = view.findViewById(R.id.search_view);
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                adapter.getFilter().filter(s);
+                try {
+                    adapter.getFilter().filter(s);
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-                adapter.getFilter().filter(s);
+                try {
+                    adapter.getFilter().filter(s);
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
                 return false;
             }
         });
@@ -154,6 +175,7 @@ public class DaftarKosFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                //Disini bagian jika response jaringan terdapat ganguan/error
                 try {
                     String responseBody = new String(error.networkResponse.data, "utf-8");
                     JSONObject jsonMessage = new JSONObject(responseBody);
@@ -162,9 +184,6 @@ public class DaftarKosFragment extends Fragment {
                 } catch (JSONException | UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                //Disini bagian jika response jaringan terdapat ganguan/error
-//                Toast.makeText(getContext(), error.getMessage(),
-//                        Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }){

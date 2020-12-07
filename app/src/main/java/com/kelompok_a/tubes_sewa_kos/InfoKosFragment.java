@@ -28,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.gson.JsonObject;
+import com.kelompok_a.tubes_sewa_kos.API.BookmarkAPI;
 import com.kelompok_a.tubes_sewa_kos.API.KostAPI;
 import com.kelompok_a.tubes_sewa_kos.API.UserAPI;
 import com.kelompok_a.tubes_sewa_kos.databinding.FragmentInfoKosBinding;
@@ -51,6 +52,7 @@ public class InfoKosFragment extends Fragment {
     private FragmentInfoKosBinding binding;
     private SharedPref sharedPref;
     private ProgressDialog progressDialog;
+    private int bookmarkId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,12 +69,11 @@ public class InfoKosFragment extends Fragment {
 
         nama = "";
         noHp = "";
+        bookmarkId = -1;
 
         kos = (Kos) getArguments().getSerializable("kos");
 
         binding.setKos(kos);
-        getOwner();
-
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +108,46 @@ public class InfoKosFragment extends Fragment {
         binding.btnBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(bookmarkId != -1) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Hapus bookmark ini?");
+                    dialog.setPositiveButton("Tidak", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    dialog.setNegativeButton("Ya", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //delete function here
+                            deleteBookmark();
+                        }
+                    });
 
+                    AlertDialog alertDialog = dialog.create();
+                    alertDialog.show();
+                }
+                else {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Tambah kost ini ke bookmark?");
+                    dialog.setPositiveButton("Tidak", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    dialog.setNegativeButton("Ya", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //delete function here
+                            tambahBookmark();
+                        }
+                    });
+
+                    AlertDialog alertDialog = dialog.create();
+                    alertDialog.show();
+                }
             }
         });
 
@@ -132,7 +172,7 @@ public class InfoKosFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                dialog.setTitle("Yakin ingin menghapus kos ini?");
+                dialog.setTitle("Hapus kost ini?");
                 dialog.setPositiveButton("Tidak", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -160,6 +200,13 @@ public class InfoKosFragment extends Fragment {
             binding.hapusBtn.setVisibility(View.VISIBLE);
         }
 
+        if(sharedPref.getIdUser() == -1) {
+            binding.btnBookmark.setVisibility(View.GONE);
+        }
+
+        getOwner();
+        getInBookmark();
+
         return view;
     }
 
@@ -181,6 +228,57 @@ public class InfoKosFragment extends Fragment {
                                         .beginTransaction()
                                         .replace(R.id.fragment_layout, daftarKosFragment)
                                         .commit();
+                            }
+                            Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data, "utf-8");
+                    JSONObject jsonMessage = new JSONObject(responseBody);
+                    String message = jsonMessage.getString("message");
+                    Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                progressDialog.dismiss();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + sharedPref.getToken());
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void deleteBookmark() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        showProgress("Menghapus bookmark");
+
+        StringRequest stringRequest = new StringRequest(DELETE, BookmarkAPI.URL_DELETE + bookmarkId,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if(obj.getString("status").equals("Success")) {
+                                binding.btnBookmark.setText(R.string.tambah_bookmark);
+                                if(sharedPref.loadNightModeState()) {
+                                    binding.btnBookmark.setBackgroundColor(getResources().getColor(R.color.button_ok_dark));
+                                }
+                                else {
+                                    binding.btnBookmark.setBackgroundColor(getResources().getColor(R.color.button_ok));
+                                }
+                                bookmarkId = -1;
                             }
                             Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
@@ -238,6 +336,51 @@ public class InfoKosFragment extends Fragment {
                     e.printStackTrace();
                 }
                 binding.textNamaNoHp.setText(nama + " - " + noHp);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Disini bagian jika response jaringan terdapat ganguan/error
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + sharedPref.getToken());
+                return params;
+            }
+        };
+
+        //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
+        queue.add(stringRequest);
+    }
+
+    public void getInBookmark() {
+        //Pendeklarasian queue
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        //Meminta tanggapan string dari URL yang telah disediakan menggunakan method GET
+        //untuk request ini tidak memerlukan parameter
+
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, BookmarkAPI.URL_CHECK + kos.getId()
+                , null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
+                if(response.optString("status").equalsIgnoreCase("Success")) {
+                    try {
+                        JSONObject data = (JSONObject) response.getJSONArray("data").get(0);
+
+                        bookmarkId = data.optInt("id");
+                        System.out.println(bookmarkId);
+
+                        binding.btnBookmark.setText(R.string.hapus_bookmark);
+                        binding.btnBookmark.setBackgroundColor(getResources().getColor(R.color.button_delete));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 progressDialog.dismiss();
 
             }
@@ -245,8 +388,6 @@ public class InfoKosFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Disini bagian jika response jaringan terdapat ganguan/error
-                Toast.makeText(getContext(), error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }) {
@@ -260,6 +401,59 @@ public class InfoKosFragment extends Fragment {
 
         //Disini proses penambahan request yang sudah kita buat ke reuest queue yang sudah dideklarasi
         queue.add(stringRequest);
+    }
+
+    public void tambahBookmark() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        showProgress("Menambahkan bookmark");
+
+        StringRequest stringRequest = new StringRequest(POST, BookmarkAPI.URL_ADD,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if(obj.getString("status").equals("Success")) {
+                                JSONObject data = obj.getJSONObject("data");
+                                bookmarkId = data.optInt("id");
+                                binding.btnBookmark.setText(R.string.hapus_bookmark);
+                                binding.btnBookmark.setBackgroundColor(getResources().getColor(R.color.button_delete));
+                            }
+                            Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data, "utf-8");
+                    JSONObject jsonMessage = new JSONObject(responseBody);
+                    String message = jsonMessage.getString("message");
+                    Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                progressDialog.dismiss();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + sharedPref.getToken());
+                return params;
+            }
+            @Override
+            public Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("idKost", String.valueOf(kos.getId()));
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     public void showProgress(String title) {
