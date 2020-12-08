@@ -137,12 +137,4 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     }
                 });
     }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        finish();
-        startActivity(getIntent());
-        changeTheme();
-    }
 }
