@@ -30,13 +30,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPref = new SharedPref(this);
-        if(sharedPref.loadNightModeState()){
-            setTheme(R.style.DarkTheme);
-        }
-        else
-        {
-            setTheme(R.style.AppTheme);
-        }
+        changeTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -110,6 +104,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    public void changeTheme() {
+        if(sharedPref.loadNightModeState()){
+            setTheme(R.style.DarkTheme);
+        }
+        else
+        {
+            setTheme(R.style.AppTheme);
+        }
+    }
+
     private void createFirebaseNotification() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String CHANNEL_ID = "Channel 1";
@@ -132,5 +136,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+        changeTheme();
     }
 }
